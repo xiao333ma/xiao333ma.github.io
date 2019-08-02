@@ -99,15 +99,15 @@
 <meta property="og:site_name" content="小马的后花园">
 <meta property="og:description" content="随着组件化的发展，越来越多的东西被单独拆分出来，形成单独的库。在 iOS 中，我们通常用 Cocoapods 来进行管理包管理。本篇文章将解释如何制作自己的私有 pod 库，以及私有 pod 库的互相依赖。 本机环境：  macOS Mojave 10.14.5Cocoapods 1.7.3ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/07/21/Make-private-pod-lib/create_pod.png">
-<meta property="og:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/07/21/Make-private-pod-lib/pod_file_save.png">
-<meta property="og:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/07/21/Make-private-pod-lib/pod_verify_success.png">
-<meta property="og:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/07/21/Make-private-pod-lib/add_pod.png">
-<meta property="og:updated_time" content="2019-07-29T10:30:53.705Z">
+<meta property="og:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/create_pod.png">
+<meta property="og:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/pod_file_save.png">
+<meta property="og:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/pod_verify_success.png">
+<meta property="og:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/add_pod.png">
+<meta property="og:updated_time" content="2019-08-02T02:32:44.999Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="制作私有 Pod 库">
 <meta name="twitter:description" content="随着组件化的发展，越来越多的东西被单独拆分出来，形成单独的库。在 iOS 中，我们通常用 Cocoapods 来进行管理包管理。本篇文章将解释如何制作自己的私有 pod 库，以及私有 pod 库的互相依赖。 本机环境：  macOS Mojave 10.14.5Cocoapods 1.7.3ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.">
-<meta name="twitter:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/07/21/Make-private-pod-lib/create_pod.png">
+<meta name="twitter:image" content="https://xiao333ma.github.io/2019/07/21/Make-private-pod-lib/create_pod.png">
 
 
 
@@ -444,7 +444,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-07-29 18:30:53" itemprop="dateModified" datetime="2019-07-29T18:30:53+08:00">2019-07-29</time>
+                <time title="Modified: 2019-08-02 10:32:44" itemprop="dateModified" datetime="2019-08-02T10:32:44+08:00">2019-08-02</time>
               </span>
             
           
@@ -526,13 +526,10 @@
 <h2 id="1-创建一个私有库"><a href="#1-创建一个私有库" class="headerlink" title="1. 创建一个私有库"></a>1. 创建一个私有库</h2><p>我们在 github 上创建一个仓库，叫做 <code>Xiaoma</code>，来存放我们的 <code>pod</code> 库代码，然后，打开终端，进入 <code>桌面</code>，执行以下命令</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pod repo add Xiaoma https://github.com/xiao333ma/Xiaoma.git</span><br><span class="line"></span><br><span class="line">pod lib create Xiaoma</span><br></pre></td></tr></table></figure>
 
-<p>pod 将会以交互式的方式询问一些配置项，根据需要进行选择。看起来是这个样子的</p>
-<img src="/2019/07/21/Make-private-pod-lib/07/21/Make-private-pod-lib/create_pod.png" title="This is an image">
-
+<p>pod 将会以交互式的方式询问一些配置项，根据需要进行选择。看起来是这个样子的<br><img src="/2019/07/21/Make-private-pod-lib/create_pod.png" alt></p>
 <p>这样我们就创建了一个 Xcode 工程，pod 会自动帮我们打开。</p>
 <h2 id="2-开发-pod-库"><a href="#2-开发-pod-库" class="headerlink" title="2. 开发 pod 库"></a>2. 开发 pod 库</h2><p>随着工程创建完毕，我们就可以进行愉快的开发了。在工程中，我们会看到有一个 <code>pod</code> 的子工程，里边有一个 <code>Development Pods</code> 文件夹，在这个文件夹下边，将会有我们所定义名称为 <code>Xiaoma</code> 的 pod 库文件夹。当我们新建一个文件的时候，应该保存在物理路径 <code>~/Desktop/Xiaoma/Xiaoma/Classes/</code> 下</p>
-<img src="/2019/07/21/Make-private-pod-lib/07/21/Make-private-pod-lib/pod_file_save.png" title="文件">
-
+<p><img src="/2019/07/21/Make-private-pod-lib/pod_file_save.png" alt></p>
 <h2 id="3-修改-podspec-文件"><a href="#3-修改-podspec-文件" class="headerlink" title="3. 修改 .podspec 文件"></a>3. 修改 .podspec 文件</h2><p>当我们开发完成之后，我们需要修改 <code>podspec</code> 文件</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|s|</span></span><br><span class="line">  s.name             = <span class="string">'Xiaoma'</span></span><br><span class="line">  s.version          = <span class="string">'0.1.0'</span></span><br><span class="line">  s.summary          = <span class="string">'这是一个测试 pod 库'</span></span><br><span class="line">  s.description      = <span class="string">"这是一个测试 pod 库，就是测试一下"</span></span><br><span class="line">  s.homepage         = <span class="string">'https://github.com/xiao333ma/Xiaoma'</span></span><br><span class="line">  s.license          = &#123; <span class="symbol">:type</span> =&gt; <span class="string">'MIT'</span>, <span class="symbol">:file</span> =&gt; <span class="string">'LICENSE'</span> &#125;</span><br><span class="line">  s.author           = &#123; <span class="string">'git'</span> =&gt; <span class="string">'xiao3333ma@gmail.com'</span> &#125;</span><br><span class="line">  s.source           = &#123; <span class="symbol">:git</span> =&gt; <span class="string">'https://github.com/xiao333ma/Xiaoma.git'</span>, <span class="symbol">:tag</span> =&gt; s.version.to_s &#125;</span><br><span class="line">  s.ios.deployment_target = <span class="string">'8.0'</span></span><br><span class="line">  s.source_files = <span class="string">'Xiaoma/Classes/*.&#123;h,m&#125;'</span></span><br><span class="line">  s.public_header_files = <span class="string">'Xiaoma/Classes/*.h'</span></span><br><span class="line">  s.dependency <span class="string">'AFNetworking'</span>, <span class="string">'~&gt; 2.3'</span></span><br><span class="line">  s.dependency <span class="string">'Masonry'</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 
@@ -545,9 +542,7 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod lib lint Xiaoma.podspec --allow-warnings</span><br></pre></td></tr></table></figure>
 
 <p>当获得类似如下提示时，pod 库，将通过验证。</p>
-<img src="/2019/07/21/Make-private-pod-lib/07/21/Make-private-pod-lib/pod_verify_success.png" title="文件">
-
-
+<p> <img src="/2019/07/21/Make-private-pod-lib/pod_verify_success.png" alt></p>
 <h2 id="5-将代码推送到-github"><a href="#5-将代码推送到-github" class="headerlink" title="5. 将代码推送到 github"></a>5. 将代码推送到 github</h2><p>接下来就是常规操作了，将代码推送到 github 上，打个 <code>tag</code> 为 <code>0.1.0</code> </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git tag <span class="string">'0.1.0'</span></span><br><span class="line">git push --tags</span><br></pre></td></tr></table></figure>
 
@@ -586,10 +581,7 @@
 <h2 id="5-推送-podspec"><a href="#5-推送-podspec" class="headerlink" title="5. 推送 podspec"></a>5. 推送 podspec</h2><p>在 XiaomaTools 下，执行一下命令，将 podspec 推送到 <code>XiaomaPrivatePodSpecs.git</code> 中，如果该 pod 库依赖了其他第三方库，需要加上 <code>https://github.com/CocoaPods/Specs.git</code>来向 <code>pod</code> 说明，我引用了第三方库，你需要去这个里边找到对应的库。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo push XiaomaTools XiaomaTools.podspec --sources=https://github.com/xiao333ma/XiaomaPrivatePodSpecs.git,https://github.com/CocoaPods/Specs.git --allow-warnings</span><br></pre></td></tr></table></figure>
 
-<p>执行成功后，将会有如下提示，注意，这里是  <code>- [Add] XiaomaTools (0.1.0)</code></p>
-<img src="/2019/07/21/Make-private-pod-lib/07/21/Make-private-pod-lib/add_pod.png" title="添加">
-
-
+<p>执行成功后，将会有如下提示，注意，这里是  <code>- [Add] XiaomaTools (0.1.0)</code><br><img src="/2019/07/21/Make-private-pod-lib/add_pod.png" alt></p>
 <h2 id="6-依赖-XiaomaTools"><a href="#6-依赖-XiaomaTools" class="headerlink" title="6. 依赖 XiaomaTools"></a>6. 依赖 XiaomaTools</h2><p>成功之后，我们就可以在 <code>Xiaoma</code> 中依赖 <code>XiaomaTools</code> 了</p>
 <p>修改 <code>Xiaoma.podspec</code> 增加 <code>s.dependency &#39;XiaomaTools&#39;</code></p>
 <p>修改 <code>Xiaoma/Example</code> 下边的 <code>Podfile</code> 增加下边两行</p>
@@ -758,7 +750,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -808,7 +800,13 @@
         
           
         
-        <span class="site-state-item-count">6</span>
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>
