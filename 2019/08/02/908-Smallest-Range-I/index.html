@@ -91,16 +91,18 @@
   };
 </script>
 
-  <meta name="description" content="记录一些东西">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小马的后花园">
-<meta property="og:url" content="https://xiao333ma.github.io/tags/线程安全/index.html">
+  <meta name="description" content="908. Smallest Range I 这道题一开始没看懂，其实不难 因为范围是 [-K, K]，所以，找到 A 中的 最大值 maxB 和 最小值 minB，然后我们计算差值就可以了，差值就只 maxB - K - (minB + K)，也就是 res = maxB - minB - 2 * K，如果 res &amp;gt; 0 返回即可，小于 0 的话，返回 0  即可。 go 的实现代码如下">
+<meta name="keywords" content="LeetCode,Algorithm,Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="908.Smallest_Range_I">
+<meta property="og:url" content="https://xiao333ma.github.io/2019/08/02/908-Smallest-Range-I/index.html">
 <meta property="og:site_name" content="小马的后花园">
-<meta property="og:description" content="记录一些东西">
+<meta property="og:description" content="908. Smallest Range I 这道题一开始没看懂，其实不难 因为范围是 [-K, K]，所以，找到 A 中的 最大值 maxB 和 最小值 minB，然后我们计算差值就可以了，差值就只 maxB - K - (minB + K)，也就是 res = maxB - minB - 2 * K，如果 res &amp;gt; 0 返回即可，小于 0 的话，返回 0  即可。 go 的实现代码如下">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-02T11:44:04.282Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小马的后花园">
-<meta name="twitter:description" content="记录一些东西">
+<meta name="twitter:title" content="908.Smallest_Range_I">
+<meta name="twitter:description" content="908. Smallest Range I 这道题一开始没看懂，其实不难 因为范围是 [-K, K]，所以，找到 A 中的 最大值 maxB 和 最小值 minB，然后我们计算差值就可以了，差值就只 maxB - K - (minB + K)，也就是 res = maxB - minB - 2 * K，如果 res &amp;gt; 0 返回即可，小于 0 的话，返回 0  即可。 go 的实现代码如下">
 
 
 
@@ -108,7 +110,7 @@
 
   
   
-  <link rel="canonical" href="https://xiao333ma.github.io/tags/线程安全/">
+  <link rel="canonical" href="https://xiao333ma.github.io/2019/08/02/908-Smallest-Range-I/">
 
 
 
@@ -119,7 +121,7 @@
 </script>
 
   
-  <title>Tag: 线程安全 | 小马的后花园</title>
+  <title>908.Smallest_Range_I | 小马的后花园</title>
   
 
 
@@ -187,7 +189,7 @@
     
   
 
-  <div class="container sidebar-position-right ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -241,7 +243,7 @@
         
         
           
-          <li class="menu-item menu-item-tags menu-item-active">
+          <li class="menu-item menu-item-tags">
 
     
     
@@ -310,28 +312,6 @@
   
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
   
 
   
@@ -352,57 +332,232 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>线程安全<small>Tag</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/02/908-Smallest-Range-I/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/2016/10/17/Lock_in_iOS/" itemprop="url">
-            
-              <span itemprop="name">Lock in iOS</span>
-            
-          </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">908.Smallest_Range_I
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2016-10-17T21:02:31+08:00" content="2016-10-17">
-          10-17
-        </time>
-      </div>
+              
+            
+          </h1>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
 
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-02 19:37:02 / Modified: 19:44:04" itemprop="dateCreated datePublished" datetime="2019-08-02T19:37:02+08:00">2019-08-02</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">623</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">1 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://leetcode.com/problems/smallest-range-i/" target="_blank" rel="noopener">908. Smallest Range I</a></p>
+<p>这道题一开始没看懂，其实不难</p>
+<p>因为范围是 [-K, K]，所以，找到 A 中的 <code>最大值 maxB</code> 和 <code>最小值 minB</code>，然后我们计算差值就可以了，差值就只 <code>maxB - K - (minB + K)</code>，也就是 <code>res = maxB - minB - 2 * K</code>，如果 <code>res &gt; 0</code> 返回即可，<code>小于 0</code> 的话，返回 <code>0</code>  即可。</p>
+<p>go 的实现代码如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">smallestRangeI</span><span class="params">(A []<span class="keyword">int</span>, K <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(A) == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    minB := A[<span class="number">0</span>]</span><br><span class="line">    maxB := A[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, value := <span class="keyword">range</span> A &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> value &lt; minB &#123;</span><br><span class="line">                minB = value</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> value &gt; maxB&#123;</span><br><span class="line">                maxB = value</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res := maxB - minB - <span class="number">2</span> * K</span><br><span class="line">    <span class="keyword">if</span> res &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
 
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+            <a href="/tags/Go/" rel="tag"># Go</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/02/Const-Static-Extern/" rel="next" title="Const_Static_Extern">
+                <i class="fa fa-chevron-left"></i> Const_Static_Extern
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
 
         </div>
         
@@ -683,6 +838,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
 
   <script src="/js/next-boot.js?v=7.2.0"></script>
 
@@ -696,6 +855,37 @@
 
   
 
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '68964f514e0c240fd361',
+    clientSecret: '6437d71cb036dc41055ce3cd83c5bed7dd7a6183',
+    repo: 'xiao333ma.github.io',
+    owner: 'xiao333ma',
+    admin: ['xiao333ma'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
 
 
   
@@ -770,13 +960,13 @@
       var articles = db.collection('articles')
 
       //https://hexo.io/docs/variables.html
-      var isPost = ''.length > 0
+      var isPost = '908.Smallest_Range_I'.length > 0
       var isArchive = '' === 'true'
       var isCategory = ''.length > 0
-      var isTag = '线程安全'.length > 0
+      var isTag = ''.length > 0
 
       if (isPost) { //is article page
-        var title = ''
+        var title = '908.Smallest_Range_I'
         var doc = articles.doc(title)
 
         getCount(doc, true).then(appendCountTo($('.post-meta')))
@@ -784,7 +974,7 @@
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("Lock in iOS");' //if you have a better way to get titles of posts, please change it
+        var postsstr = '' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {
