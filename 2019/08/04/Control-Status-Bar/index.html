@@ -91,16 +91,18 @@
   };
 </script>
 
-  <meta name="description" content="记录一些东西">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小马的后花园">
-<meta property="og:url" content="https://xiao333ma.github.io/tags/线程安全/index.html">
+  <meta name="description" content="有时候我们会单独控制一个 VC 中状态栏的显示与隐藏，这里记录一下，如何正确的显示与隐藏状态栏 由于是单独控制，所以我们需要在 info.plist 中开启 View controller-based status bar appearance 为 YES。然后我们在自动控制的 VC 中，重写两个方法 123456789- (BOOL)prefersStatusBarHidden &amp;#123;">
+<meta name="keywords" content="iOS,StatusBar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Control_Status_Bar">
+<meta property="og:url" content="https://xiao333ma.github.io/2019/08/04/Control-Status-Bar/index.html">
 <meta property="og:site_name" content="小马的后花园">
-<meta property="og:description" content="记录一些东西">
+<meta property="og:description" content="有时候我们会单独控制一个 VC 中状态栏的显示与隐藏，这里记录一下，如何正确的显示与隐藏状态栏 由于是单独控制，所以我们需要在 info.plist 中开启 View controller-based status bar appearance 为 YES。然后我们在自动控制的 VC 中，重写两个方法 123456789- (BOOL)prefersStatusBarHidden &amp;#123;">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-05T02:36:28.413Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小马的后花园">
-<meta name="twitter:description" content="记录一些东西">
+<meta name="twitter:title" content="Control_Status_Bar">
+<meta name="twitter:description" content="有时候我们会单独控制一个 VC 中状态栏的显示与隐藏，这里记录一下，如何正确的显示与隐藏状态栏 由于是单独控制，所以我们需要在 info.plist 中开启 View controller-based status bar appearance 为 YES。然后我们在自动控制的 VC 中，重写两个方法 123456789- (BOOL)prefersStatusBarHidden &amp;#123;">
 
 
 
@@ -108,7 +110,7 @@
 
   
   
-  <link rel="canonical" href="https://xiao333ma.github.io/tags/线程安全/">
+  <link rel="canonical" href="https://xiao333ma.github.io/2019/08/04/Control-Status-Bar/">
 
 
 
@@ -119,7 +121,7 @@
 </script>
 
   
-  <title>Tag: 线程安全 | 小马的后花园</title>
+  <title>Control_Status_Bar | 小马的后花园</title>
   
 
 
@@ -187,7 +189,7 @@
     
   
 
-  <div class="container sidebar-position-right ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -241,7 +243,7 @@
         
         
           
-          <li class="menu-item menu-item-tags menu-item-active">
+          <li class="menu-item menu-item-tags">
 
     
     
@@ -310,28 +312,6 @@
   
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
   
 
   
@@ -352,57 +332,246 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>线程安全<small>Tag</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/Control-Status-Bar/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/2016/10/17/Lock_in_iOS/" itemprop="url">
-            
-              <span itemprop="name">Lock in iOS</span>
-            
-          </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Control_Status_Bar
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2016-10-17T21:02:31+08:00" content="2016-10-17">
-          10-17
-        </time>
-      </div>
+              
+            
+          </h1>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
 
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-04 20:59:50" itemprop="dateCreated datePublished" datetime="2019-08-04T20:59:50+08:00">2019-08-04</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-08-05 10:36:28" itemprop="dateModified" datetime="2019-08-05T10:36:28+08:00">2019-08-05</time>
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">1.1k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">2 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>有时候我们会单独控制一个 VC 中状态栏的显示与隐藏，这里记录一下，如何正确的显示与隐藏状态栏</p>
+<p>由于是单独控制，所以我们需要在 info.plist 中开启 <code>View controller-based status bar appearance</code> 为 <code>YES</code>。然后我们在自动控制的 VC 中，重写两个方法</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)prefersStatusBarHidden &#123;</span><br><span class="line">    <span class="comment">// your logic for hide or show</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.hiddenStatusBar;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UIStatusBarStyle</span>)preferredStatusBarStyle &#123;</span><br><span class="line">    <span class="comment">// your logic for statusBar style</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">UIStatusBarStyleDefault</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在我们需要的地方调用 <code>[self setNeedsStatusBarAppearanceUpdate];</code> 即可，通常这可以满足大多数的场景。但是有一天我发现，有时候调用了 <code>[self setNeedsStatusBarAppearanceUpdate];</code> 之后，<code>prefersStatusBarHidden</code> 并不会被回调。经过一番探索后发现，如果你有一个 <code>未被隐藏的 UIWindow 的时候</code>，调用 <code>setNeedsStatusBarAppearanceUpdate</code> 并不会触发 <code>prefersStatusBarHidden</code>，所以，只需要把对应的 <code>UIWindow</code> 隐藏就可以了。</p>
+<p>现在项目中用的是 WKWebView，当显示或隐藏状态栏的时候，会导致 WKWebView 错位，而错位的原因就是因为，在 iOS 11 上，scrollView 新出了一个 API <code>contentInsetAdjustmentBehavior</code> 导致的，所以我们只需要对 WKWebView 的 scrollView 指定成如下即可。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (@available(iOS <span class="number">11.0</span>, *)) &#123;</span><br><span class="line">    _wkWebView.scrollView.contentInsetAdjustmentBehavior = <span class="built_in">UIScrollViewContentInsetAdjustmentNever</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而对于 iOS 11 以下的版本，我们需要在 对应的 VC 中指定 <code>self.automaticallyAdjustsScrollViewInsets = NO;</code>，这样 WKWebView 就不会受到 StatusBar 的显示和隐藏的影响了。</p>
 
       
     </div>
 
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/StatusBar/" rel="tag"># StatusBar</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/02/908-Smallest-Range-I/" rel="next" title="908.Smallest_Range_I">
+                <i class="fa fa-chevron-left"></i> 908.Smallest_Range_I
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/04/876-Middle-of-the-Linked-List/" rel="prev" title="876.Middle_of_the_Linked_List">
+                876.Middle_of_the_Linked_List <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
 
         </div>
         
@@ -685,6 +854,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
 
   <script src="/js/next-boot.js?v=7.2.0"></script>
 
@@ -698,6 +871,37 @@
 
   
 
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '68964f514e0c240fd361',
+    clientSecret: '6437d71cb036dc41055ce3cd83c5bed7dd7a6183',
+    repo: 'xiao333ma.github.io',
+    owner: 'xiao333ma',
+    admin: ['xiao333ma'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
 
 
   
@@ -772,13 +976,13 @@
       var articles = db.collection('articles')
 
       //https://hexo.io/docs/variables.html
-      var isPost = ''.length > 0
+      var isPost = 'Control_Status_Bar'.length > 0
       var isArchive = '' === 'true'
       var isCategory = ''.length > 0
-      var isTag = '线程安全'.length > 0
+      var isTag = ''.length > 0
 
       if (isPost) { //is article page
-        var title = ''
+        var title = 'Control_Status_Bar'
         var doc = articles.doc(title)
 
         getCount(doc, true).then(appendCountTo($('.post-meta')))
@@ -786,7 +990,7 @@
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("Lock in iOS");' //if you have a better way to get titles of posts, please change it
+        var postsstr = '' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {

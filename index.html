@@ -347,6 +347,826 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/05/557-Reverse-Words-in-a-String-III/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/05/557-Reverse-Words-in-a-String-III/" class="post-title-link" itemprop="url">557.Reverse_Words_in_a_String_III</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-05 18:49:55 / Modified: 18:56:50" itemprop="dateCreated datePublished" datetime="2019-08-05T18:49:55+08:00">2019-08-05</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">864</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">2 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/" target="_blank" rel="noopener">557. Reverse Words in a String III</a></p>
+<p>这道题比较简单，就是逆序字符串</p>
+<ol>
+<li>按照空格分割字符串</li>
+<li>字符串逆序</li>
+<li>拼接输出</li>
+</ol>
+<h1>常规解法</h1>
+<ol>
+<li>分割字符串</li>
+<li>倒序遍历字符串</li>
+<li>拼接输出</li>
+</ol>
+<p>go 语言实现如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseWords</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> res <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line">	strArr := strings.Split(s, <span class="string">" "</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> idx, world := <span class="keyword">range</span> strArr &#123;</span><br><span class="line">		<span class="keyword">if</span> idx != <span class="number">0</span> &#123;</span><br><span class="line">			res += <span class="string">" "</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="built_in">len</span>(world) - <span class="number">1</span>; i &gt;= <span class="number">0</span> ; i-- &#123;</span><br><span class="line">			res = res + <span class="keyword">string</span>(world[i])</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样看似逻辑清晰，其实非常耗时，空间占用也大</p>
+<h1>原地逆序</h1>
+<ol>
+<li>分割字符串</li>
+<li>原地逆序，交换字符</li>
+<li>拼接输出</li>
+</ol>
+<p>go 语言实现如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseWords</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	strArr := strings.Split(s, <span class="string">" "</span>)</span><br><span class="line">	<span class="keyword">for</span> i, world := <span class="keyword">range</span> strArr &#123;</span><br><span class="line">		strArr[i] = revers(world)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> strings.Join(strArr, <span class="string">" "</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">revers</span><span class="params">(str <span class="keyword">string</span>)</span> <span class="title">string</span></span>   &#123;</span><br><span class="line">	bytes := []<span class="keyword">byte</span>(str)</span><br><span class="line">	i, j := <span class="number">0</span>, <span class="built_in">len</span>(bytes) - <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> i &lt; j &#123;</span><br><span class="line">		bytes[i], bytes[j] = bytes[j], bytes[i]</span><br><span class="line">		i++</span><br><span class="line">		j--</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">string</span>(bytes)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>原地逆序时间复杂度为 O(N)，空间复杂度为 O(1)，这样可以大大节省空间</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/811-Subdomain-Visit-Count/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/04/811-Subdomain-Visit-Count/" class="post-title-link" itemprop="url">811.Subdomain_Visit_Count</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-04 23:53:35" itemprop="dateCreated datePublished" datetime="2019-08-04T23:53:35+08:00">2019-08-04</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-08-05 10:36:28" itemprop="dateModified" datetime="2019-08-05T10:36:28+08:00">2019-08-05</time>
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">966</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">2 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://leetcode.com/problems/subdomain-visit-count/" target="_blank" rel="noopener">811. Subdomain Visit Count</a></p>
+<p>这个题没什么好说的，就常规解法，放到一个 map 中，key 是 域名，value 是域名出现的次数，最后遍历这个 map，按照格式输出就行。</p>
+<ol>
+<li>用空格分割字符串，找出数字和后边的域名，并把域名和数字作为 key-value 添加到 map 中</li>
+<li>用点分割，点后边的字符串就是子域名，然后把子域名 和 数字 作为 key-value 添加到 map 中</li>
+<li>最后遍历这个 map，按照格式输出就行。</li>
+</ol>
+<p>go 实现如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">subdomainVisits</span><span class="params">(cpdomains []<span class="keyword">string</span>)</span> []<span class="title">string</span></span> &#123;</span><br><span class="line">    countMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">var</span> count <span class="keyword">int</span></span><br><span class="line">    <span class="keyword">var</span> subStr <span class="keyword">string</span></span><br><span class="line">    <span class="keyword">for</span> _, domain := <span class="keyword">range</span> cpdomains &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i, c := <span class="keyword">range</span> domain &#123;</span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">' '</span> &#123;</span><br><span class="line">                count, _ = strconv.Atoi(domain[:i])</span><br><span class="line">                subStr = domain[i+<span class="number">1</span>:]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        countMap[subStr] += count</span><br><span class="line">        <span class="keyword">for</span> i, c := <span class="keyword">range</span> subStr &#123;</span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">'.'</span> &#123;</span><br><span class="line">                countMap[subStr[i+<span class="number">1</span>:]] += count</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> key, value := <span class="keyword">range</span> countMap &#123;</span><br><span class="line">        res = <span class="built_in">append</span>(res, strconv.Itoa(value) + <span class="string">" "</span> + key)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/876-Middle-of-the-Linked-List/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/04/876-Middle-of-the-Linked-List/" class="post-title-link" itemprop="url">876.Middle_of_the_Linked_List</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-04 22:41:26" itemprop="dateCreated datePublished" datetime="2019-08-04T22:41:26+08:00">2019-08-04</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-08-05 10:36:28" itemprop="dateModified" datetime="2019-08-05T10:36:28+08:00">2019-08-05</time>
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">1.6k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">3 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://leetcode.com/problems/middle-of-the-linked-list/" target="_blank" rel="noopener">876. Middle of the Linked List</a></p>
+<p>该题目给定一个链表，找出链表中间的那个节点，如果是偶数的话，返回中间后边的节点</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">Output: [<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"></span><br><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">Output: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+<h1>常规解法</h1>
+<p>遍历这个链表，然后把每一个节点放在数组里边，取数组的中间值，返回。go 语言实现如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">middleNode</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    array := <span class="built_in">make</span>([]*ListNode, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> head != <span class="literal">nil</span> &#123;</span><br><span class="line">            array = <span class="built_in">append</span>(array, head)</span><br><span class="line">            head = head.Next</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> array[<span class="built_in">len</span>(array) / <span class="number">2</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Time Complexity: O(N)</p>
+<p>Space Complexity: O(N)</p>
+</blockquote>
+<h1>快慢指针</h1>
+<p>一个走一步，一个走两步，当走两步的到达末尾的时候，走一步的那个，就正好在中间。go 语言实现如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">middleNode</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> slow,fast = head,head</span><br><span class="line">    <span class="keyword">for</span> fast != <span class="literal">nil</span> &amp;&amp; fast.Next!=<span class="literal">nil</span>&#123;</span><br><span class="line">        slow = slow.Next</span><br><span class="line">        fast = fast.Next.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> slow</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Time Complexity: O(N)</p>
+<p>Space Complexity: O(1)</p>
+</blockquote>
+<p>顺便吐槽一下 LeetCode 的代码运行机制，如第一种方式，如果把 array 方在函数体外边，直接 <code>Run Code</code> 是没问题的，但是当 <code>Submit</code> 的时候，就会报错，提示 <code>Wrong Answer</code>。这个错误搞得我都要怀疑人生了，后来突然灵光一现，发现，只要把变量放在函数里边就 OK 了，也是醉了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">,--^----------,--------,-----,-------^--,</span><br><span class="line"> | |||||||||   `--------&apos;     |          O</span><br><span class="line"> `+---------------------------^----------|</span><br><span class="line">   `\_,-------, _________________________|</span><br><span class="line">     / XXXXXX /`|     /</span><br><span class="line">    / XXXXXX /  `\   /</span><br><span class="line">   / XXXXXX /\______(  </span><br><span class="line">  / XXXXXX /</span><br><span class="line"> / XXXXXX /</span><br><span class="line">(________(</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">,--^----------,--------,-----,-------^--,</span><br><span class="line"> | |||||||||   `--------&apos;     |          O</span><br><span class="line"> `+---------------------------^----------|</span><br><span class="line">   `\_,-------, _________________________|</span><br><span class="line">     / XXXXXX /`|     /</span><br><span class="line">    / XXXXXX /  `\   /</span><br><span class="line">   / XXXXXX /\______(  </span><br><span class="line">  / XXXXXX /</span><br><span class="line"> / XXXXXX /</span><br><span class="line">(________(</span><br><span class="line"> `------&apos;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/Control-Status-Bar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/04/Control-Status-Bar/" class="post-title-link" itemprop="url">Control_Status_Bar</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-04 20:59:50" itemprop="dateCreated datePublished" datetime="2019-08-04T20:59:50+08:00">2019-08-04</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-08-05 10:36:28" itemprop="dateModified" datetime="2019-08-05T10:36:28+08:00">2019-08-05</time>
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">1.1k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">2 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有时候我们会单独控制一个 VC 中状态栏的显示与隐藏，这里记录一下，如何正确的显示与隐藏状态栏</p>
+<p>由于是单独控制，所以我们需要在 info.plist 中开启 <code>View controller-based status bar appearance</code> 为 <code>YES</code>。然后我们在自动控制的 VC 中，重写两个方法</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)prefersStatusBarHidden &#123;</span><br><span class="line">    <span class="comment">// your logic for hide or show</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.hiddenStatusBar;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UIStatusBarStyle</span>)preferredStatusBarStyle &#123;</span><br><span class="line">    <span class="comment">// your logic for statusBar style</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">UIStatusBarStyleDefault</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在我们需要的地方调用 <code>[self setNeedsStatusBarAppearanceUpdate];</code> 即可，通常这可以满足大多数的场景。但是有一天我发现，有时候调用了 <code>[self setNeedsStatusBarAppearanceUpdate];</code> 之后，<code>prefersStatusBarHidden</code> 并不会被回调。经过一番探索后发现，如果你有一个 <code>未被隐藏的 UIWindow 的时候</code>，调用 <code>setNeedsStatusBarAppearanceUpdate</code> 并不会触发 <code>prefersStatusBarHidden</code>，所以，只需要把对应的 <code>UIWindow</code> 隐藏就可以了。</p>
+<p>现在项目中用的是 WKWebView，当显示或隐藏状态栏的时候，会导致 WKWebView 错位，而错位的原因就是因为，在 iOS 11 上，scrollView 新出了一个 API <code>contentInsetAdjustmentBehavior</code> 导致的，所以我们只需要对 WKWebView 的 scrollView 指定成如下即可。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (@available(iOS <span class="number">11.0</span>, *)) &#123;</span><br><span class="line">    _wkWebView.scrollView.contentInsetAdjustmentBehavior = <span class="built_in">UIScrollViewContentInsetAdjustmentNever</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而对于 iOS 11 以下的版本，我们需要在 对应的 VC 中指定 <code>self.automaticallyAdjustsScrollViewInsets = NO;</code>，这样 WKWebView 就不会受到 StatusBar 的显示和隐藏的影响了。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/02/908-Smallest-Range-I/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1527,7 +2347,7 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1585,7 +2405,9 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
         
           
         
-        <span class="site-state-item-count">10</span>
+          
+        
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>
@@ -1870,7 +2692,7 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("908.Smallest_Range_I");titles.push("Const_Static_Extern");titles.push("1002_Find_Common_Characters");titles.push("制作私有 Pod 库");titles.push("Lock in iOS");' //if you have a better way to get titles of posts, please change it
+        var postsstr = 'titles.push("557.Reverse_Words_in_a_String_III");titles.push("811.Subdomain_Visit_Count");titles.push("876.Middle_of_the_Linked_List");titles.push("Control_Status_Bar");titles.push("908.Smallest_Range_I");titles.push("Const_Static_Extern");titles.push("1002_Find_Common_Characters");titles.push("制作私有 Pod 库");titles.push("Lock in iOS");' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {
