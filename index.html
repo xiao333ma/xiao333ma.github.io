@@ -392,7 +392,7 @@
                 
               
 
-              <time title="Created: 2019-11-15 17:31:22 / Modified: 17:51:38" itemprop="dateCreated datePublished" datetime="2019-11-15T17:31:22+08:00">2019-11-15</time>
+              <time title="Created: 2019-11-15 17:31:22 / Modified: 17:54:12" itemprop="dateCreated datePublished" datetime="2019-11-15T17:31:22+08:00">2019-11-15</time>
             </span>
           
 
@@ -424,7 +424,7 @@
               
                 <span class="post-meta-item-text">Symbols count in article: </span>
               
-              <span title="Symbols count in article">1.3k</span>
+              <span title="Symbols count in article">1.1k</span>
             </span>
           
 
@@ -466,7 +466,13 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.fakeWKWebView = [[<span class="built_in">WKWebView</span> alloc] init];</span><br><span class="line">[<span class="keyword">self</span>.fakeWKWebView evaluateJavaScript:<span class="string">@"navigator.userAgent"</span> completionHandler:^(<span class="built_in">NSString</span>* _Nullable oldUA, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="keyword">self</span>.fakeWKWebView = <span class="literal">nil</span>;</span><br><span class="line">        <span class="keyword">self</span>.realWKWebView.customUserAgent = newUA;  </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
 <h2 id="xcode-11-2-打开-wkwebview-疯狂输出-log"><a class="header-anchor" href="#xcode-11-2-打开-wkwebview-疯狂输出-log">👉</a>Xcode 11.2 打开 WKWebView 疯狂输出 log</h2>
 <p>在 Xcode 11.2 打开一个 WKWebView 会输出一堆log</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[Process] kill() returned unexpected error 1</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">这是一个 WebKit 的一个 [bug](https://stackoverflow.com/questions/58321114/why-i-get-the-console-warning-process-kill-returned-unexpected-error-1-when)</span><br><span class="line"></span><br><span class="line">## 状态栏问题</span><br><span class="line"></span><br><span class="line">如果 WKWebView 页面会有显示或者隐藏状态栏的需求，你会发现，在一些系统上，显示或隐藏状态栏，页面会跳动，这是 scrollView 的问题，只需要这么设置即可</span><br><span class="line"></span><br><span class="line">``` objc</span><br><span class="line">if (@available(iOS 11.0, *)) &#123;</span><br><span class="line">    self.wkWebView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>[Process] kill() returned unexpected error 1</p>
+</blockquote>
+<p>这是一个 WebKit 的一个 <a href="https://stackoverflow.com/questions/58321114/why-i-get-the-console-warning-process-kill-returned-unexpected-error-1-when" target="_blank" rel="noopener">bug</a></p>
+<h2 id="状态栏问题"><a class="header-anchor" href="#状态栏问题">👉</a>状态栏问题</h2>
+<p>如果 WKWebView 页面会有显示或者隐藏状态栏的需求，你会发现，在一些系统上，显示或隐藏状态栏，页面会跳动，这是 scrollView 的问题，只需要这么设置即可</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (@available(iOS <span class="number">11.0</span>, *)) &#123;</span><br><span class="line">    <span class="keyword">self</span>.wkWebView.scrollView.contentInsetAdjustmentBehavior = <span class="built_in">UIScrollViewContentInsetAdjustmentNever</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           
         
       
