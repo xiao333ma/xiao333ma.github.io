@@ -347,6 +347,240 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/02/Const-Static-Extern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/02/Const-Static-Extern/" class="post-title-link" itemprop="url">Const_Static_Extern</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-02 00:01:06 / Modified: 16:04:48" itemprop="dateCreated datePublished" datetime="2019-08-02T00:01:06+08:00">2019-08-02</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">3.6k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">7 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在 Effective Objective-C 中 第 4 条，说要少用 <code>#define</code> 多用常量 ，这里就聊聊 <code>const</code> <code>static</code> <code>extern</code> 这些关键字</p>
+<h1>const</h1>
+<p>关于常量，我们有以下几种定义方式</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> one = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *i = &amp;one; <span class="comment">// 1</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> *i = &amp;one; <span class="comment">// 2</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">int</span> * <span class="keyword">const</span> i = &amp;one; <span class="comment">// 3</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> * <span class="keyword">const</span> i = &amp;one; <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+<p>我们知道当我们声明一个指针的时候</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> one = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> two = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> *i = &amp;one;</span><br></pre></td></tr></table></figure>
+<p>其实 i 本身有一个地址 A ，而 i 这个变量存储了一个指针，这个指针指向了 one 的地址，也就是 B，而这个地址中存放的是 2。</p>
+<p>其实简单的来说，const 的<code>位置</code>，决定了 A 是 const 还是 B 是 const，下边逐一分析。</p>
+<h2 id="int-const-i-和-const-int-i"><a class="header-anchor" href="#int-const-i-和-const-int-i">👉</a>int const *i 和 const int *i</h2>
+<p>关于 1 和 2 其实是一样的，都等于 <code>int const* i</code>，也就是 <code>*i</code> 是被 const 修饰的，我们无法再次改变 <code>*i</code> ，但我们可以改变 <code>i</code>。也就是我们无法 <code>*i = two</code> 但我们可以 <code>i = &amp;two</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> one = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> two = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span>* i = &amp;one;</span><br><span class="line">    </span><br><span class="line">*i = two; <span class="comment">// error: Read-only variable is not assignable</span></span><br><span class="line">i = &amp;two; <span class="comment">// correct</span></span><br></pre></td></tr></table></figure>
+<h2 id="int-const-i"><a class="header-anchor" href="#int-const-i">👉</a>int * const i</h2>
+<p>这种情况来说，<code>i</code> 是被 const 修饰的，我们是可以改变 <code>*i</code>，而无法改变 <code>i</code>。也就是我们可以 <code>*i = two</code> 但无法  <code>i = &amp;two</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> one = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> two = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> * <span class="keyword">const</span> i = &amp;one;</span><br><span class="line"></span><br><span class="line">*i = two; <span class="comment">// correct</span></span><br><span class="line">i = &amp;two; <span class="comment">// error: Cannot assign to variable 'i' with const-qualified type 'int *const'</span></span><br></pre></td></tr></table></figure>
+<h2 id="const-int-const-i"><a class="header-anchor" href="#const-int-const-i">👉</a>const int * const i</h2>
+<p>这种情况就比较简单了，我们无法改变 <code>*i</code>，也无法改变 <code>i</code> 的地址。也就是我们无法 <code>*i = two</code>，也无法  <code>i = &amp;two</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> one = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> two = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> * <span class="keyword">const</span> i = &amp;one;</span><br><span class="line">    </span><br><span class="line">*i = two; <span class="comment">// error: Read-only variable is not assignable</span></span><br><span class="line">i = &amp;two; <span class="comment">// error: Cannot assign to variable 'i' with const-qualified type 'int *const'</span></span><br></pre></td></tr></table></figure>
+<h2 id="再看"><a class="header-anchor" href="#再看">👉</a>再看</h2>
+<p>我们来看一个有意思的事情</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">11</span>;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p"</span>, &amp;a); <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p"</span>, &amp;b); <span class="comment">// 2</span></span><br><span class="line"><span class="keyword">int</span> * p;</span><br><span class="line">p = &amp;a;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%d %p %p"</span>, *p, p, &amp;p); <span class="comment">// 3</span></span><br><span class="line">*p = b;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%d %p %p"</span>, *p, p, &amp;p); <span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%d"</span>, a); <span class="comment">// 5 是多少</span></span><br></pre></td></tr></table></figure>
+<p>想想在往下看</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="number">0x7ffee643b908</span></span><br><span class="line"><span class="number">2.</span> <span class="number">0x7ffee643b8f8</span></span><br><span class="line"><span class="number">3.</span> <span class="number">10</span> <span class="number">0x7ffee643b90c</span> <span class="number">0x7ffee643b8f8</span></span><br><span class="line"><span class="number">4.</span> <span class="number">11</span> <span class="number">0x7ffee643b90c</span> <span class="number">0x7ffee643b8f8</span></span><br><span class="line"><span class="number">5.</span> <span class="number">11</span></span><br></pre></td></tr></table></figure>
+<p>怎么样，和你想的一样么，我们发现 a 被偷偷的改成了 11，这是为什么，我们分析下地址就知道了。</p>
+<p>我们先看下地址</p>
+<p><img src="/2019/08/02/Const-Static-Extern/address_01.png" alt></p>
+<p>我们知道 <code>*p</code> 是取地址的内容，当我们在执行 <code>*p = b</code> 的时候，其实就是 <code>取 0x7ffee643b90c 的内容，并修改为 11</code> ，而这个叫 a 的变量，他的地址其实还是原来的。当我们输出 a 的时候，a 变成了 11。如果我们想改变 <code>*p</code> 的值，安全的做法，是 <code>p = &amp;someValue</code> 而 <code>不要</code>使用 <code>*p = someValue</code> 所以当我们 <code>int const *p</code> 的时候，我们是无法修改 <code>*p</code> 的值的。</p>
+<p>当我们知道一个数据的地址的时候，如何取地址中存放的数据呢，例如上边有个地址是 0x7ffee643b90c，如何知道 这个地址存放的是什么。 可以这样做 <code>*(int *)(0x7ffee643b90c)</code> 这样，就能取到这个地址中存放的数据了，但是前提是你需要知道这个地址中的数据是什么类型的，不然取出来，也是不正确的。</p>
+<p>在 OC 中，其实是一样的 当我们创建一个对象 <code>NSObject *obj1 = [NSObject new]</code> 的时候， obj1 是一个地址，指向了真正的系统分配的内存空间，当我们用 <code>NSObject * const obj1</code> 来修饰的时候，我们的 obj1 就再也无法被赋值为其他值了，因为这个 obj1 是被 const 修饰的，而 *obj1 是可以被改的，有兴趣可以试试。</p>
+<h2 id="小结"><a class="header-anchor" href="#小结">👉</a>小结</h2>
+<p>关于 const 的位置，我们可以这么理解，const 后边的哪个东西，就是我们修饰的常量，是不可变的。当 <code>int const* p</code> 的时候，也就是这个 <code>*p</code> 是常量，我们无法改变他，而当 <code>int * const p</code> 的时候，这个 <code>p</code> 是常量，我们无法改变他。</p>
+<h1>static</h1>
+<p>static 有以下几点特性</p>
+<h2 id="内部可见"><a class="header-anchor" href="#内部可见">👉</a>内部可见</h2>
+<p>在 OC 中，当在我们在 .m 中写一个被 static 修饰的变量或者函数的时候，我们只能在 <code>这个文件</code> 中使用，而不能再别的地方调用。在其他地方调用，将会提示，找不到该定义。但如果在 .h 中定义的话，那么是可以被外部使用的。</p>
+<h2 id="只初始化一次"><a class="header-anchor" href="#只初始化一次">👉</a>只初始化一次</h2>
+<p>如下代码，static 修饰的 count 只会初始化一次，每次调用 count 会累加，而 不用 static 修饰的话，每次会重新初始化</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">0</span>; </span><br><span class="line">  count++; </span><br><span class="line">  <span class="keyword">return</span> count; </span><br><span class="line">&#125; </span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d "</span>, fun());  <span class="comment">// 1</span></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d "</span>, fun());  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="存储在-data-segment-中"><a class="header-anchor" href="#存储在-data-segment-中">👉</a>存储在 data segment 中</h2>
+<p>被 static 修饰的存储在 <code>data segment</code>，而在函数中，没有被 static 修饰的，存放在 <code>stack segment</code>，更详细的分配，可以参见<a href="https://www.geeksforgeeks.org/memory-layout-of-c-program/" target="_blank" rel="noopener">这篇文章</a></p>
+<h2 id="未初始化自动赋值为默认值"><a class="header-anchor" href="#未初始化自动赋值为默认值">👉</a>未初始化自动赋值为默认值</h2>
+<p>被 static 修饰的变量，如果没有指定值，将会被赋值为默认值</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> x ;</span><br><span class="line"><span class="keyword">int</span> y;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%d %d"</span>, x, y); <span class="comment">// 0 1082916864</span></span><br></pre></td></tr></table></figure>
+<h2 id="只能是特定值-不能是函数"><a class="header-anchor" href="#只能是特定值-不能是函数">👉</a>只能是特定值，不能是函数</h2>
+<p>static 修饰的只能被赋值为特定的值，而不能是函数</p>
+ <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> x = initializer(); <span class="comment">//error: Initializer element is not a compile-time constant</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%d"</span>, x);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> initializer(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">50</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1>extern</h1>
+<p>这个就比较简单了，就是一个标记，外部可用，当我们在 .m 中声明一个常量的时候，需要供外部使用就需要这么写。在 <code>Foundation</code> 框架中，我们经常能看到这种写法。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Test.m</span></span><br><span class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> kNotificationTest1 = <span class="string">@"kNotificationTest1"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">Test</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Test.h</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> kNotificationTest1;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Test</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h1>inline</h1>
+<p>inline 编译器标识符相当于在执行这段代码的时候，把这段代码直接拿过来，而不是像调用函数那样直接调用（函数会跳转，有一些开销）。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Test.m 中 </span></span><br><span class="line"></span><br><span class="line">__inline__ __attribute__((always_inline)) <span class="keyword">void</span> xiaoma(<span class="keyword">void</span>) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"ddd"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Test.h 中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> xiaoma(<span class="keyword">void</span>);</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/07/29/1002-Find-Common-Characters/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1109,7 +1343,7 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1132,7 +1366,9 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
         
           
         
-        <span class="site-state-item-count">3</span>
+          
+        
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -1175,7 +1411,9 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
         
           
         
-        <span class="site-state-item-count">13</span>
+          
+        
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>
@@ -1251,7 +1489,7 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
@@ -1460,7 +1698,7 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("1002_Find_Common_Characters");titles.push("制作私有 Pod 库");titles.push("Lock in iOS");' //if you have a better way to get titles of posts, please change it
+        var postsstr = 'titles.push("Const_Static_Extern");titles.push("1002_Find_Common_Characters");titles.push("制作私有 Pod 库");titles.push("Lock in iOS");' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {

@@ -91,18 +91,20 @@
   };
 </script>
 
-  <meta name="description" content="811. Subdomain Visit Count 这个题没什么好说的，就常规解法，放到一个 map 中，key 是 域名，value 是域名出现的次数，最后遍历这个 map，按照格式输出就行。  用空格分割字符串，找出数字和后边的域名，并把域名和数字作为 key-value 添加到 map 中 用点分割，点后边的字符串就是子域名，然后把子域名 和 数字 作为 key-value 添加到 map">
-<meta name="keywords" content="LeetCode,Algorithm,Go">
+  <meta name="description" content="上次去吃火锅，被测试 call 说无法打包了，原来是上次有人用电脑，用完之后，忘记连接电源，导致电脑自动关机了，电脑再次开启的时候，Jenkins 反向代理没有开，导致无法打包（我们的 Jenkins 是部署在 阿里云上的，通过反向代理，代理到公司的一个 Mac 电脑上，从而进行打包）。当时也没有带电脑，导致我只好打车回去，去启动反向代理。搞好之后就配置了下开机自动启动，在这里记录一下，以免有人需">
+<meta name="keywords" content="自动启动">
 <meta property="og:type" content="article">
-<meta property="og:title" content="811.Subdomain_Visit_Count">
-<meta property="og:url" content="https://xiao333ma.github.io/2019/08/04/811-Subdomain-Visit-Count/index.html">
+<meta property="og:title" content="Mac 开机自启动程序">
+<meta property="og:url" content="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/index.html">
 <meta property="og:site_name" content="小马的后花园">
-<meta property="og:description" content="811. Subdomain Visit Count 这个题没什么好说的，就常规解法，放到一个 map 中，key 是 域名，value 是域名出现的次数，最后遍历这个 map，按照格式输出就行。  用空格分割字符串，找出数字和后边的域名，并把域名和数字作为 key-value 添加到 map 中 用点分割，点后边的字符串就是子域名，然后把子域名 和 数字 作为 key-value 添加到 map">
+<meta property="og:description" content="上次去吃火锅，被测试 call 说无法打包了，原来是上次有人用电脑，用完之后，忘记连接电源，导致电脑自动关机了，电脑再次开启的时候，Jenkins 反向代理没有开，导致无法打包（我们的 Jenkins 是部署在 阿里云上的，通过反向代理，代理到公司的一个 Mac 电脑上，从而进行打包）。当时也没有带电脑，导致我只好打车回去，去启动反向代理。搞好之后就配置了下开机自动启动，在这里记录一下，以免有人需">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-05T02:36:28.412Z">
+<meta property="og:image" content="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/bootstrap_session_2x.png">
+<meta property="og:updated_time" content="2020-01-19T09:26:28.256Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="811.Subdomain_Visit_Count">
-<meta name="twitter:description" content="811. Subdomain Visit Count 这个题没什么好说的，就常规解法，放到一个 map 中，key 是 域名，value 是域名出现的次数，最后遍历这个 map，按照格式输出就行。  用空格分割字符串，找出数字和后边的域名，并把域名和数字作为 key-value 添加到 map 中 用点分割，点后边的字符串就是子域名，然后把子域名 和 数字 作为 key-value 添加到 map">
+<meta name="twitter:title" content="Mac 开机自启动程序">
+<meta name="twitter:description" content="上次去吃火锅，被测试 call 说无法打包了，原来是上次有人用电脑，用完之后，忘记连接电源，导致电脑自动关机了，电脑再次开启的时候，Jenkins 反向代理没有开，导致无法打包（我们的 Jenkins 是部署在 阿里云上的，通过反向代理，代理到公司的一个 Mac 电脑上，从而进行打包）。当时也没有带电脑，导致我只好打车回去，去启动反向代理。搞好之后就配置了下开机自动启动，在这里记录一下，以免有人需">
+<meta name="twitter:image" content="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/bootstrap_session_2x.png">
 
 
 
@@ -110,7 +112,7 @@
 
   
   
-  <link rel="canonical" href="https://xiao333ma.github.io/2019/08/04/811-Subdomain-Visit-Count/">
+  <link rel="canonical" href="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/">
 
 
 
@@ -121,7 +123,7 @@
 </script>
 
   
-  <title>811.Subdomain_Visit_Count | 小马的后花园</title>
+  <title>Mac 开机自启动程序 | 小马的后花园</title>
   
 
 
@@ -348,7 +350,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/811-Subdomain-Visit-Count/">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiao333ma">
@@ -365,7 +367,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">811.Subdomain_Visit_Count
+          <h1 class="post-title" itemprop="name headline">Mac 开机自启动程序
 
               
             
@@ -391,23 +393,13 @@
                 
               
 
-              <time title="Created: 2019-08-04 23:53:35" itemprop="dateCreated datePublished" datetime="2019-08-04T23:53:35+08:00">2019-08-04</time>
+              <time title="Created: 2020-01-19 15:46:17 / Modified: 17:26:28" itemprop="dateCreated datePublished" datetime="2020-01-19T15:46:17+08:00">2020-01-19</time>
             </span>
           
 
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-08-05 10:36:28" itemprop="dateModified" datetime="2019-08-05T10:36:28+08:00">2019-08-05</time>
-              </span>
             
           
           
@@ -419,7 +411,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a></span>
 
                 
                 
@@ -448,7 +440,7 @@
               
                 <span class="post-meta-item-text">Symbols count in article: </span>
               
-              <span title="Symbols count in article">966</span>
+              <span title="Symbols count in article">3.1k</span>
             </span>
           
 
@@ -460,7 +452,7 @@
               
                 <span class="post-meta-item-text">Reading time &asymp;</span>
               
-              <span title="Reading time">2 mins.</span>
+              <span title="Reading time">6 mins.</span>
             </span>
           
 
@@ -479,15 +471,30 @@
       
 
       
-        <p><a href="https://leetcode.com/problems/subdomain-visit-count/" target="_blank" rel="noopener">811. Subdomain Visit Count</a></p>
-<p>这个题没什么好说的，就常规解法，放到一个 map 中，key 是 域名，value 是域名出现的次数，最后遍历这个 map，按照格式输出就行。</p>
-<ol>
-<li>用空格分割字符串，找出数字和后边的域名，并把域名和数字作为 key-value 添加到 map 中</li>
-<li>用点分割，点后边的字符串就是子域名，然后把子域名 和 数字 作为 key-value 添加到 map 中</li>
-<li>最后遍历这个 map，按照格式输出就行。</li>
-</ol>
-<p>go 实现如下</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">subdomainVisits</span><span class="params">(cpdomains []<span class="keyword">string</span>)</span> []<span class="title">string</span></span> &#123;</span><br><span class="line">    countMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">var</span> count <span class="keyword">int</span></span><br><span class="line">    <span class="keyword">var</span> subStr <span class="keyword">string</span></span><br><span class="line">    <span class="keyword">for</span> _, domain := <span class="keyword">range</span> cpdomains &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i, c := <span class="keyword">range</span> domain &#123;</span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">' '</span> &#123;</span><br><span class="line">                count, _ = strconv.Atoi(domain[:i])</span><br><span class="line">                subStr = domain[i+<span class="number">1</span>:]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        countMap[subStr] += count</span><br><span class="line">        <span class="keyword">for</span> i, c := <span class="keyword">range</span> subStr &#123;</span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">'.'</span> &#123;</span><br><span class="line">                countMap[subStr[i+<span class="number">1</span>:]] += count</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> key, value := <span class="keyword">range</span> countMap &#123;</span><br><span class="line">        res = <span class="built_in">append</span>(res, strconv.Itoa(value) + <span class="string">" "</span> + key)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>上次去吃火锅，被测试 call 说无法打包了，原来是上次有人用电脑，用完之后，忘记连接电源，导致电脑自动关机了，电脑再次开启的时候，Jenkins 反向代理没有开，导致无法打包（我们的 Jenkins 是部署在 阿里云上的，通过反向代理，代理到公司的一个 Mac 电脑上，从而进行打包）。当时也没有带电脑，导致我只好打车回去，去启动反向代理。搞好之后就配置了下开机自动启动，在这里记录一下，以免有人需要。</p>
+<p>通过查阅<a href="https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/Introduction.html#//apple_ref/doc/uid/10000172i-SW1-SW1" target="_blank" rel="noopener">文档</a>可知，Mac 通过<code>launchd</code> 来启动服务</p>
+<p><img src="/2020/01/19/mac-run-something-when-start/bootstrap_session_2x.png" alt></p>
+<p>我们只需要在对应的目录，配置好 <code>plist</code> 文件即可，当 Mac 开机或者登录账户的时候，将会按照 <code>plist</code> 文件来加载我们指定的程序。</p>
+<p>存放 <code>plist</code> 文件的目录有以下几个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/System/Library/LaunchDaemons/ // 开机后加载</span><br><span class="line">/Library/LaunchDaemons/        // 开机后加载</span><br><span class="line">/System/Library/LaunchAgents/  // 用户登录后</span><br><span class="line">/Library/LaunchAgents/         // 用户登录后</span><br><span class="line">/Library/LaunchDaemons/        // 用户登录后</span><br><span class="line">~/Library/LaunchAgents/        // 用户登录后，自定义的 plist 可以放在这里</span><br></pre></td></tr></table></figure>
+<p>详细的 plist 文件的 key 和 value 可以通过 <code>man launchd.plist</code> 来查看，但必须包含以下几项</p>
+<p>Label 一个字符串，用来标识要启动的程序，要求唯一<br>
+Program 指定一个 sh 脚本，或者一个可执行文件等<br>
+ProgramArguments 如果不指定 Program 的话，将依据这个参数来<br>
+KeepAlive BOOL 是否一直存活</p>
+<p>通过 <code>launchctl load ~/Library/LaunchAgents/com.your.launchjob.plist</code> 来启动程序</p>
+<p>通过 <code>launchctl unload ~/Library/LaunchAgents/com.your.launchjob.plist</code> 来终止程序</p>
+<p>com.package.jenkinsAgent.plist 内容如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>KeepAlive<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>EnvironmentVariables<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">key</span>&gt;</span>PATH<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">string</span>&gt;</span>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/package/.rvm/gems/ruby-2.5.3/bin:/Users/package/.rvm/gems/ruby-2.5.3@global/bin:/Users/package/.rvm/rubies/ruby-2.5.3/bin:/Users/package/.fastlane/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/package/.rvm/bin<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>com.package.jenkinsAgent<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>Program<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/package/autoRun/jenkinsAgent.sh<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>StandardErrorPath<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/package/autoRun/jenkinsAgent.stdout.log<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>StandardOutPath<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/package/autoRun/jenkinsAgent.stdout.log<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>WorkingDirectory<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/package/jenkins_workspace<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在上述的 plist 文件中，我们指定了，在用户登录的时候，去执行 <code>/Users/package/autoRun/jenkinsAgent.sh</code> 脚本，并且设置了一些 log 输出到指定文件，设置了工作目录和环境变量。</p>
+<p>/Users/package/autoRun/jenkinsAgent.sh 内容如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/zsh --login</span></span><br><span class="line"><span class="built_in">export</span> LC_ALL=en_US.UTF-8</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">ruby -v</span><br><span class="line">rvm use 2.5.3</span><br><span class="line"><span class="built_in">cd</span> /Users/package/autoRun</span><br><span class="line">java -jar agent.jar -jnlpUrl http://jenkins-test-int.igetcool.com/computer/ios-package-node/slave-agent.jnlp -secret dce8bc948f8992da8499926eafcd88d80c395a62c24cf15b2a3adaeeaed593c2 -workDir <span class="string">"/Users/package/jenkins_workspace"</span></span><br></pre></td></tr></table></figure>
+<p>如果 sh 脚本不能执行，请添加权限 <code>chmod +x jenkinsAgent.sh</code></p>
+<p>我们这边用的 Jenkins + fastlane 来进行打包<br>
+由于使用的 fastlane，当我通过系统直接启动 Jenkins 反向代理，在 Jenkins 上打包的时候，会发现找不到 fastlane，其实电脑上已经装好了。在 Jenkins 打包的时候，我打印了下环境变量发现和直接在终端里打印的是不一样的，后来想可能是系统启动只会加载默认的环境变量，所以我在 <code>com.package.jenkinsAgent.plist</code> 加上了 <code>EnvironmentVariables</code> 相关的配置。后来在打包，就找到了 fastlane，但又发现<code>ruby</code>版本不对，原来系统启动的时候，使用的系统自带的 ruby，导致 和 <code>bundler</code> 不匹配，这里切换下用户手动安装的 ruby 就可以了。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rvm list</span><br><span class="line">ruby -v</span><br><span class="line">rvm use <span class="number">2.5</span>.<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>当配置完成后，重启系统，Jenkins 反向代理将自动启动</p>
+
       
     </div>
 
@@ -517,11 +524,7 @@
         
         <div class="post-tags">
           
-            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
-          
-            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
-          
-            <a href="/tags/Go/" rel="tag"># Go</a>
+            <a href="/tags/自动启动/" rel="tag"># 自动启动</a>
           
         </div>
       
@@ -534,8 +537,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/04/876-Middle-of-the-Linked-List/" rel="next" title="876.Middle_of_the_Linked_List">
-                <i class="fa fa-chevron-left"></i> 876.Middle_of_the_Linked_List
+              <a href="/2019/12/18/编写可维护的代码/" rel="next" title="编写可维护的代码">
+                <i class="fa fa-chevron-left"></i> 编写可维护的代码
               </a>
             
           </div>
@@ -543,10 +546,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/05/557-Reverse-Words-in-a-String-III/" rel="prev" title="557.Reverse_Words_in_a_String_III">
-                557.Reverse_Words_in_a_String_III <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -989,13 +988,13 @@
       var articles = db.collection('articles')
 
       //https://hexo.io/docs/variables.html
-      var isPost = '811.Subdomain_Visit_Count'.length > 0
+      var isPost = 'Mac 开机自启动程序'.length > 0
       var isArchive = '' === 'true'
       var isCategory = ''.length > 0
       var isTag = ''.length > 0
 
       if (isPost) { //is article page
-        var title = '811.Subdomain_Visit_Count'
+        var title = 'Mac 开机自启动程序'
         var doc = articles.doc(title)
 
         getCount(doc, true).then(appendCountTo($('.post-meta')))
