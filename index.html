@@ -347,6 +347,423 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/03/05/NSOperation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/05/NSOperation/" class="post-title-link" itemprop="url">NSOperation</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-03-05 21:19:01 / Modified: 22:53:42" itemprop="dateCreated datePublished" datetime="2020-03-05T21:19:01+08:00">2020-03-05</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">3k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">5 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近做了一些和 NSOperation 有关的事情，感觉这个类还是挺有意思的，这里记录一下细节和遇到的一些坑。</p>
+<p>我们一般使用 NSOperation 的时候，通常会配合 NSOperationQueue 来进行管理，通过配置 NSOperationQueue 的 <code>maxConcurrentOperationCount</code> 来设置为并行或者串行。而对于一个 NSOperation 来说，我们也可把它处理成同步或异步的，针对不同的情况，我们也需要做不同的处理。</p>
+<p>我们打开 NSOperation.h 会首先看到 <code>start</code> 方法和 <code>main</code> 方法。接下来我就详细说下自己的理解。</p>
+<p><a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/OperationObjects/OperationObjects.html" target="_blank" rel="noopener">Concurrency Programming Guide</a></p>
+<h1>main 方法</h1>
+<p>看文档的注释发现，NSOperation 的默认实现是什么都没做，也就是个空方法，当子类去重写的时候，也不用调 super，而且它会在一个由 NSOperation 提供的 <code>autorelease pool</code> 中执行，子类也不需要创建自己的 <code>autorelease pool</code>，</p>
+<p>当我们实现一个<code>同步</code>的方法的时候，我们只需要重写 <code>main</code> 函数，处理我们的业务逻辑即可，不需要处理除 <code>canceled</code> 之外的任何状态。关于 <code>canceled</code>，后边再说。</p>
+<h1>start 方法</h1>
+<p>这个方法默认实现是处理了一些状态，检查这个 operation 是否可以正常执行，如 ready 是否为 YES, cancelled 是否为 YES, finished 是否为 YES ，然后调用 main 方法。如果不满足条件，直接 return，就结束了。</p>
+<p>如果要执行一个<code>异步</code>的 Operation，例如发送一个网络请求，那么，需要重写 <code>start</code> 方法，并自己手动设置一些状态（不能调用 super），处理这些状态的时候，需要手动触发一些 KVO 来通知其他可能监听的对象，如 isCancelled, isExecuting, isFinished 等。当异步处理结束时，需要更新 finished 和 executing 状态。</p>
+<p>如果是异步的话，我们也应该在 处理 asynchronous 属性，返回 YES</p>
+<h1>cancelled</h1>
+<p>我们应该一直关注 canceled 状态，当被标记为 YES 的时候，我们需要取消我们现在所执行的任务，而 <code>不只是</code> 在 <code>start</code> 或 <code>main</code> 函数中对 <code>canceled</code> 状态进行判断。当有一个循环，或者说是耗时比较长的操作中，我们应该在比较好处理的位置，判断 canceled 状态，在 <code>YES</code> 的情况下，结束我们的 operation。</p>
+<ol>
+<li>如果是 YES 的话，应该立即结束</li>
+<li>在每个循环中，至少判断一次，如果一个迭代比较耗时，建议多检查几次</li>
+<li>在任何处理比较方便的位置，取消任务</li>
+</ol>
+<p>说了那么多，那我们看看如何定义一个子类，来处理同步和异步</p>
+<p><strong>同步</strong></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MySyncOperation.h</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MySyncOperation</span> : <span class="title">NSOperation</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MySyncOperation.m</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MySyncOperation</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)main &#123;</span><br><span class="line">    <span class="comment">// 处理自己的业务逻辑</span></span><br><span class="line">    <span class="comment">// 注意处理 cancelled</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isAsynchronous &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p><strong>异步</strong></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyASyncOperation.h</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyAsyncOperation</span> : <span class="title">NSOperation</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyASyncOperation.m</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyAsyncOperation</span> ()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">BOOL</span>        executing;</span><br><span class="line">    <span class="built_in">BOOL</span>        finished;</span><br><span class="line">    <span class="built_in">BOOL</span>        cancelled;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyAsyncOperation</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 只需重写 start 方法，不能重写 main。</span></span><br><span class="line">- (<span class="keyword">void</span>)start &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>.cancelled) &#123;</span><br><span class="line">        [<span class="keyword">self</span> setOperationToExecutingState];</span><br><span class="line">        [<span class="keyword">self</span> handleBusiness];</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">self</span> setOperationToFinishState];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)cancel &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.isFinished) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">super</span> cancel];</span><br><span class="line">    [<span class="keyword">self</span> setOperationToCancelState];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handleBusiness &#123;</span><br><span class="line">    <span class="comment">// 处理自己的业务逻辑</span></span><br><span class="line">    <span class="comment">// 注意处理 cancelled</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setOperationToExecutingState &#123;</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    executing = <span class="literal">YES</span>;</span><br><span class="line">    finished = <span class="literal">NO</span>;</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setOperationToFinishState &#123;</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    executing = <span class="literal">NO</span>;</span><br><span class="line">    finished = <span class="literal">YES</span>;</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setOperationToCancelState &#123;</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isCancelled"</span>];</span><br><span class="line">    cancelled = <span class="literal">YES</span>;</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isCancelled"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isExecuting &#123;</span><br><span class="line">    <span class="keyword">return</span> executing;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">- (<span class="built_in">BOOL</span>)isFinished &#123;</span><br><span class="line">    <span class="keyword">return</span> finished;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isCancelled &#123;</span><br><span class="line">    <span class="keyword">return</span> cancelled;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isAsynchronous &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/02/24/clean-code-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/02/24/clean-code-summary/" class="post-title-link" itemprop="url">代码整洁之道Tips</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 14:34:03" itemprop="dateCreated datePublished" datetime="2020-02-24T14:34:03+08:00">2020-02-24</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-03-05 21:18:45" itemprop="dateModified" datetime="2020-03-05T21:18:45+08:00">2020-03-05</time>
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Project/" itemprop="url" rel="index"><span itemprop="name">Project</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">206</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">1 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>读完代码整洁之道，感觉书中写的很多地方都很棒，这里着重记录几点</p>
+<ol>
+<li>像写诗一样写代码</li>
+<li><strong>规范清晰有意义的变量名</strong></li>
+<li><strong>每个函数只做一件事，尽量保持短小</strong></li>
+<li>减少函数的参数</li>
+<li><strong>函数无副作用，干什么就是干什么，别乱做其他功能</strong></li>
+<li>删掉不必要的注释</li>
+<li>写注释的话一定清晰易懂，不要写的含糊不清晰的，有误导性的</li>
+<li>减少代码的跳跃，在接下来的地方实现功能</li>
+<li>做单元测试</li>
+<li><strong>抽象事物，如 类，函数等</strong></li>
+<li><strong>使用设计模式</strong></li>
+<li><strong>类应该短小，高内聚，低耦合</strong></li>
+<li>AOP</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -392,7 +809,7 @@
                 
               
 
-              <time title="Created: 2020-01-19 15:46:17 / Modified: 17:26:28" itemprop="dateCreated datePublished" datetime="2020-01-19T15:46:17+08:00">2020-01-19</time>
+              <time title="Created: 2020-01-19 15:46:17 / Modified: 17:31:14" itemprop="dateCreated datePublished" datetime="2020-01-19T15:46:17+08:00">2020-01-19</time>
             </span>
           
 
@@ -494,7 +911,7 @@ KeepAlive BOOL 是否一直存活</p>
 <p>我们这边用的 Jenkins + fastlane 来进行打包<br>
 由于使用的 fastlane，当我通过系统直接启动 Jenkins 反向代理，在 Jenkins 上打包的时候，会发现找不到 fastlane，其实电脑上已经装好了。在 Jenkins 打包的时候，我打印了下环境变量发现和直接在终端里打印的是不一样的，后来想可能是系统启动只会加载默认的环境变量，所以我在 <code>com.package.jenkinsAgent.plist</code> 加上了 <code>EnvironmentVariables</code> 相关的配置。后来在打包，就找到了 fastlane，但又发现<code>ruby</code>版本不对，原来系统启动的时候，使用的系统自带的 ruby，导致 和 <code>bundler</code> 不匹配，这里切换下用户手动安装的 ruby 就可以了。</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rvm list</span><br><span class="line">ruby -v</span><br><span class="line">rvm use <span class="number">2.5</span>.<span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>当配置完成后，重启系统，Jenkins 反向代理将自动启动</p>
+<p>当配置完成后，重启系统，Jenkins 反向代理将自动启动****</p>
 
           
         
@@ -2002,394 +2419,6 @@ KeepAlive BOOL 是否一直存活</p>
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/Control-Status-Bar/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xiao333ma">
-      <meta itemprop="description" content="记录一些东西">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小马的后花园">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/04/Control-Status-Bar/" class="post-title-link" itemprop="url">Control_Status_Bar</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-08-04 20:59:50" itemprop="dateCreated datePublished" datetime="2019-08-04T20:59:50+08:00">2019-08-04</time>
-            </span>
-          
-
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-08-05 10:36:28" itemprop="dateModified" datetime="2019-08-05T10:36:28+08:00">2019-08-05</time>
-              </span>
-            
-          
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              
-              <span title="Symbols count in article">1.1k</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              
-              <span title="Reading time">2 mins.</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>有时候我们会单独控制一个 VC 中状态栏的显示与隐藏，这里记录一下，如何正确的显示与隐藏状态栏</p>
-<p>由于是单独控制，所以我们需要在 info.plist 中开启 <code>View controller-based status bar appearance</code> 为 <code>YES</code>。然后我们在自动控制的 VC 中，重写两个方法</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)prefersStatusBarHidden &#123;</span><br><span class="line">    <span class="comment">// your logic for hide or show</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.hiddenStatusBar;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UIStatusBarStyle</span>)preferredStatusBarStyle &#123;</span><br><span class="line">    <span class="comment">// your logic for statusBar style</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">UIStatusBarStyleDefault</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后在我们需要的地方调用 <code>[self setNeedsStatusBarAppearanceUpdate];</code> 即可，通常这可以满足大多数的场景。但是有一天我发现，有时候调用了 <code>[self setNeedsStatusBarAppearanceUpdate];</code> 之后，<code>prefersStatusBarHidden</code> 并不会被回调。经过一番探索后发现，如果你有一个 <code>未被隐藏的 UIWindow 的时候</code>，调用 <code>setNeedsStatusBarAppearanceUpdate</code> 并不会触发 <code>prefersStatusBarHidden</code>，所以，只需要把对应的 <code>UIWindow</code> 隐藏就可以了。</p>
-<p>现在项目中用的是 WKWebView，当显示或隐藏状态栏的时候，会导致 WKWebView 错位，而错位的原因就是因为，在 iOS 11 上，scrollView 新出了一个 API <code>contentInsetAdjustmentBehavior</code> 导致的，所以我们只需要对 WKWebView 的 scrollView 指定成如下即可。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (@available(iOS <span class="number">11.0</span>, *)) &#123;</span><br><span class="line">    _wkWebView.scrollView.contentInsetAdjustmentBehavior = <span class="built_in">UIScrollViewContentInsetAdjustmentNever</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>而对于 iOS 11 以下的版本，我们需要在 对应的 VC 中指定 <code>self.automaticallyAdjustsScrollViewInsets = NO;</code>，这样 WKWebView 就不会受到 StatusBar 的显示和隐藏的影响了。</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/02/908-Smallest-Range-I/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xiao333ma">
-      <meta itemprop="description" content="记录一些东西">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小马的后花园">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/02/908-Smallest-Range-I/" class="post-title-link" itemprop="url">908.Smallest_Range_I</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-08-02 19:37:02 / Modified: 19:44:04" itemprop="dateCreated datePublished" datetime="2019-08-02T19:37:02+08:00">2019-08-02</time>
-            </span>
-          
-
-          
-            
-
-            
-          
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              
-              <span title="Symbols count in article">623</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              
-              <span title="Reading time">1 mins.</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://leetcode.com/problems/smallest-range-i/" target="_blank" rel="noopener">908. Smallest Range I</a></p>
-<p>这道题一开始没看懂，其实不难</p>
-<p>因为范围是 [-K, K]，所以，找到 A 中的 <code>最大值 maxB</code> 和 <code>最小值 minB</code>，然后我们计算差值就可以了，差值就只 <code>maxB - K - (minB + K)</code>，也就是 <code>res = maxB - minB - 2 * K</code>，如果 <code>res &gt; 0</code> 返回即可，<code>小于 0</code> 的话，返回 <code>0</code>  即可。</p>
-<p>go 的实现代码如下</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">smallestRangeI</span><span class="params">(A []<span class="keyword">int</span>, K <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(A) == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    minB := A[<span class="number">0</span>]</span><br><span class="line">    maxB := A[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, value := <span class="keyword">range</span> A &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> value &lt; minB &#123;</span><br><span class="line">                minB = value</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> value &gt; maxB&#123;</span><br><span class="line">                maxB = value</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res := maxB - minB - <span class="number">2</span> * K</span><br><span class="line">    <span class="keyword">if</span> res &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2439,7 +2468,7 @@ KeepAlive BOOL 是否一直存活</p>
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2466,7 +2495,9 @@ KeepAlive BOOL 是否一直存活</p>
         
           
         
-        <span class="site-state-item-count">5</span>
+          
+        
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -2513,7 +2544,11 @@ KeepAlive BOOL 是否一直存活</p>
         
           
         
-        <span class="site-state-item-count">15</span>
+          
+        
+          
+        
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>
@@ -2798,7 +2833,7 @@ KeepAlive BOOL 是否一直存活</p>
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("Mac 开机自启动程序");titles.push("编写可维护的代码");titles.push("Fitness");titles.push("WKWebView_tips");titles.push("883.Projection_Area_of_3D_Shapes");titles.push("557.Reverse_Words_in_a_String_III");titles.push("811.Subdomain_Visit_Count");titles.push("876.Middle_of_the_Linked_List");titles.push("Control_Status_Bar");titles.push("908.Smallest_Range_I");' //if you have a better way to get titles of posts, please change it
+        var postsstr = 'titles.push("NSOperation");titles.push("代码整洁之道Tips");titles.push("Mac 开机自启动程序");titles.push("编写可维护的代码");titles.push("Fitness");titles.push("WKWebView_tips");titles.push("883.Projection_Area_of_3D_Shapes");titles.push("557.Reverse_Words_in_a_String_III");titles.push("811.Subdomain_Visit_Count");titles.push("876.Middle_of_the_Linked_List");' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {

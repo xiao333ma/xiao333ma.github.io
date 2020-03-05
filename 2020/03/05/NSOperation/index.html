@@ -91,18 +91,18 @@
   };
 </script>
 
-  <meta name="description" content="876. Middle of the Linked List 该题目给定一个链表，找出链表中间的那个节点，如果是偶数的话，返回中间后边的节点 12345Input: [1,2,3,4,5]Output: [3,4,5]Input: [1,2,3,4,5,6]Output: [4,5,6] 常规解法 遍历这个链表，然后把每一个节点放在数组里边，取数组的中间值，返回。go 语言实现如下 1234567">
-<meta name="keywords" content="LeetCode,Algorithm,Go">
+  <meta name="description" content="最近做了一些和 NSOperation 有关的事情，感觉这个类还是挺有意思的，这里记录一下细节和遇到的一些坑。 我们一般使用 NSOperation 的时候，通常会配合 NSOperationQueue 来进行管理，通过配置 NSOperationQueue 的 maxConcurrentOperationCount 来设置为并行或者串行。而对于一个 NSOperation 来说，我们也可把它处理">
+<meta name="keywords" content="iOS,NSOperation">
 <meta property="og:type" content="article">
-<meta property="og:title" content="876.Middle_of_the_Linked_List">
-<meta property="og:url" content="https://xiao333ma.github.io/2019/08/04/876-Middle-of-the-Linked-List/index.html">
+<meta property="og:title" content="NSOperation">
+<meta property="og:url" content="https://xiao333ma.github.io/2020/03/05/NSOperation/index.html">
 <meta property="og:site_name" content="小马的后花园">
-<meta property="og:description" content="876. Middle of the Linked List 该题目给定一个链表，找出链表中间的那个节点，如果是偶数的话，返回中间后边的节点 12345Input: [1,2,3,4,5]Output: [3,4,5]Input: [1,2,3,4,5,6]Output: [4,5,6] 常规解法 遍历这个链表，然后把每一个节点放在数组里边，取数组的中间值，返回。go 语言实现如下 1234567">
+<meta property="og:description" content="最近做了一些和 NSOperation 有关的事情，感觉这个类还是挺有意思的，这里记录一下细节和遇到的一些坑。 我们一般使用 NSOperation 的时候，通常会配合 NSOperationQueue 来进行管理，通过配置 NSOperationQueue 的 maxConcurrentOperationCount 来设置为并行或者串行。而对于一个 NSOperation 来说，我们也可把它处理">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-05T02:36:28.413Z">
+<meta property="og:updated_time" content="2020-03-05T14:53:42.392Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="876.Middle_of_the_Linked_List">
-<meta name="twitter:description" content="876. Middle of the Linked List 该题目给定一个链表，找出链表中间的那个节点，如果是偶数的话，返回中间后边的节点 12345Input: [1,2,3,4,5]Output: [3,4,5]Input: [1,2,3,4,5,6]Output: [4,5,6] 常规解法 遍历这个链表，然后把每一个节点放在数组里边，取数组的中间值，返回。go 语言实现如下 1234567">
+<meta name="twitter:title" content="NSOperation">
+<meta name="twitter:description" content="最近做了一些和 NSOperation 有关的事情，感觉这个类还是挺有意思的，这里记录一下细节和遇到的一些坑。 我们一般使用 NSOperation 的时候，通常会配合 NSOperationQueue 来进行管理，通过配置 NSOperationQueue 的 maxConcurrentOperationCount 来设置为并行或者串行。而对于一个 NSOperation 来说，我们也可把它处理">
 
 
 
@@ -110,7 +110,7 @@
 
   
   
-  <link rel="canonical" href="https://xiao333ma.github.io/2019/08/04/876-Middle-of-the-Linked-List/">
+  <link rel="canonical" href="https://xiao333ma.github.io/2020/03/05/NSOperation/">
 
 
 
@@ -121,7 +121,7 @@
 </script>
 
   
-  <title>876.Middle_of_the_Linked_List | 小马的后花园</title>
+  <title>NSOperation | 小马的后花园</title>
   
 
 
@@ -348,7 +348,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/876-Middle-of-the-Linked-List/">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/03/05/NSOperation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiao333ma">
@@ -365,7 +365,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">876.Middle_of_the_Linked_List
+          <h1 class="post-title" itemprop="name headline">NSOperation
 
               
             
@@ -391,23 +391,13 @@
                 
               
 
-              <time title="Created: 2019-08-04 22:41:26" itemprop="dateCreated datePublished" datetime="2019-08-04T22:41:26+08:00">2019-08-04</time>
+              <time title="Created: 2020-03-05 21:19:01 / Modified: 22:53:42" itemprop="dateCreated datePublished" datetime="2020-03-05T21:19:01+08:00">2020-03-05</time>
             </span>
           
 
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-08-05 10:36:28" itemprop="dateModified" datetime="2019-08-05T10:36:28+08:00">2019-08-05</time>
-              </span>
             
           
           
@@ -419,7 +409,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
 
                 
                 
@@ -448,7 +438,7 @@
               
                 <span class="post-meta-item-text">Symbols count in article: </span>
               
-              <span title="Symbols count in article">1.6k</span>
+              <span title="Symbols count in article">3k</span>
             </span>
           
 
@@ -460,7 +450,7 @@
               
                 <span class="post-meta-item-text">Reading time &asymp;</span>
               
-              <span title="Reading time">3 mins.</span>
+              <span title="Reading time">5 mins.</span>
             </span>
           
 
@@ -479,25 +469,32 @@
       
 
       
-        <p><a href="https://leetcode.com/problems/middle-of-the-linked-list/" target="_blank" rel="noopener">876. Middle of the Linked List</a></p>
-<p>该题目给定一个链表，找出链表中间的那个节点，如果是偶数的话，返回中间后边的节点</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">Output: [<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"></span><br><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">Output: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br></pre></td></tr></table></figure>
-<h1>常规解法</h1>
-<p>遍历这个链表，然后把每一个节点放在数组里边，取数组的中间值，返回。go 语言实现如下</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">middleNode</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    array := <span class="built_in">make</span>([]*ListNode, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> head != <span class="literal">nil</span> &#123;</span><br><span class="line">            array = <span class="built_in">append</span>(array, head)</span><br><span class="line">            head = head.Next</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> array[<span class="built_in">len</span>(array) / <span class="number">2</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Time Complexity: O(N)</p>
-<p>Space Complexity: O(N)</p>
-</blockquote>
-<h1>快慢指针</h1>
-<p>一个走一步，一个走两步，当走两步的到达末尾的时候，走一步的那个，就正好在中间。go 语言实现如下</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">middleNode</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> slow,fast = head,head</span><br><span class="line">    <span class="keyword">for</span> fast != <span class="literal">nil</span> &amp;&amp; fast.Next!=<span class="literal">nil</span>&#123;</span><br><span class="line">        slow = slow.Next</span><br><span class="line">        fast = fast.Next.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> slow</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Time Complexity: O(N)</p>
-<p>Space Complexity: O(1)</p>
-</blockquote>
-<p>顺便吐槽一下 LeetCode 的代码运行机制，如第一种方式，如果把 array 方在函数体外边，直接 <code>Run Code</code> 是没问题的，但是当 <code>Submit</code> 的时候，就会报错，提示 <code>Wrong Answer</code>。这个错误搞得我都要怀疑人生了，后来突然灵光一现，发现，只要把变量放在函数里边就 OK 了，也是醉了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">,--^----------,--------,-----,-------^--,</span><br><span class="line"> | |||||||||   `--------&apos;     |          O</span><br><span class="line"> `+---------------------------^----------|</span><br><span class="line">   `\_,-------, _________________________|</span><br><span class="line">     / XXXXXX /`|     /</span><br><span class="line">    / XXXXXX /  `\   /</span><br><span class="line">   / XXXXXX /\______(  </span><br><span class="line">  / XXXXXX /</span><br><span class="line"> / XXXXXX /</span><br><span class="line">(________(</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">,--^----------,--------,-----,-------^--,</span><br><span class="line"> | |||||||||   `--------&apos;     |          O</span><br><span class="line"> `+---------------------------^----------|</span><br><span class="line">   `\_,-------, _________________________|</span><br><span class="line">     / XXXXXX /`|     /</span><br><span class="line">    / XXXXXX /  `\   /</span><br><span class="line">   / XXXXXX /\______(  </span><br><span class="line">  / XXXXXX /</span><br><span class="line"> / XXXXXX /</span><br><span class="line">(________(</span><br><span class="line"> `------&apos;</span><br></pre></td></tr></table></figure>
+        <p>最近做了一些和 NSOperation 有关的事情，感觉这个类还是挺有意思的，这里记录一下细节和遇到的一些坑。</p>
+<p>我们一般使用 NSOperation 的时候，通常会配合 NSOperationQueue 来进行管理，通过配置 NSOperationQueue 的 <code>maxConcurrentOperationCount</code> 来设置为并行或者串行。而对于一个 NSOperation 来说，我们也可把它处理成同步或异步的，针对不同的情况，我们也需要做不同的处理。</p>
+<p>我们打开 NSOperation.h 会首先看到 <code>start</code> 方法和 <code>main</code> 方法。接下来我就详细说下自己的理解。</p>
+<p><a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/OperationObjects/OperationObjects.html" target="_blank" rel="noopener">Concurrency Programming Guide</a></p>
+<h1>main 方法</h1>
+<p>看文档的注释发现，NSOperation 的默认实现是什么都没做，也就是个空方法，当子类去重写的时候，也不用调 super，而且它会在一个由 NSOperation 提供的 <code>autorelease pool</code> 中执行，子类也不需要创建自己的 <code>autorelease pool</code>，</p>
+<p>当我们实现一个<code>同步</code>的方法的时候，我们只需要重写 <code>main</code> 函数，处理我们的业务逻辑即可，不需要处理除 <code>canceled</code> 之外的任何状态。关于 <code>canceled</code>，后边再说。</p>
+<h1>start 方法</h1>
+<p>这个方法默认实现是处理了一些状态，检查这个 operation 是否可以正常执行，如 ready 是否为 YES, cancelled 是否为 YES, finished 是否为 YES ，然后调用 main 方法。如果不满足条件，直接 return，就结束了。</p>
+<p>如果要执行一个<code>异步</code>的 Operation，例如发送一个网络请求，那么，需要重写 <code>start</code> 方法，并自己手动设置一些状态（不能调用 super），处理这些状态的时候，需要手动触发一些 KVO 来通知其他可能监听的对象，如 isCancelled, isExecuting, isFinished 等。当异步处理结束时，需要更新 finished 和 executing 状态。</p>
+<p>如果是异步的话，我们也应该在 处理 asynchronous 属性，返回 YES</p>
+<h1>cancelled</h1>
+<p>我们应该一直关注 canceled 状态，当被标记为 YES 的时候，我们需要取消我们现在所执行的任务，而 <code>不只是</code> 在 <code>start</code> 或 <code>main</code> 函数中对 <code>canceled</code> 状态进行判断。当有一个循环，或者说是耗时比较长的操作中，我们应该在比较好处理的位置，判断 canceled 状态，在 <code>YES</code> 的情况下，结束我们的 operation。</p>
+<ol>
+<li>如果是 YES 的话，应该立即结束</li>
+<li>在每个循环中，至少判断一次，如果一个迭代比较耗时，建议多检查几次</li>
+<li>在任何处理比较方便的位置，取消任务</li>
+</ol>
+<p>说了那么多，那我们看看如何定义一个子类，来处理同步和异步</p>
+<p><strong>同步</strong></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MySyncOperation.h</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MySyncOperation</span> : <span class="title">NSOperation</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MySyncOperation.m</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MySyncOperation</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)main &#123;</span><br><span class="line">    <span class="comment">// 处理自己的业务逻辑</span></span><br><span class="line">    <span class="comment">// 注意处理 cancelled</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isAsynchronous &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p><strong>异步</strong></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyASyncOperation.h</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyAsyncOperation</span> : <span class="title">NSOperation</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyASyncOperation.m</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyAsyncOperation</span> ()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">BOOL</span>        executing;</span><br><span class="line">    <span class="built_in">BOOL</span>        finished;</span><br><span class="line">    <span class="built_in">BOOL</span>        cancelled;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyAsyncOperation</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 只需重写 start 方法，不能重写 main。</span></span><br><span class="line">- (<span class="keyword">void</span>)start &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>.cancelled) &#123;</span><br><span class="line">        [<span class="keyword">self</span> setOperationToExecutingState];</span><br><span class="line">        [<span class="keyword">self</span> handleBusiness];</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">self</span> setOperationToFinishState];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)cancel &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.isFinished) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">super</span> cancel];</span><br><span class="line">    [<span class="keyword">self</span> setOperationToCancelState];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handleBusiness &#123;</span><br><span class="line">    <span class="comment">// 处理自己的业务逻辑</span></span><br><span class="line">    <span class="comment">// 注意处理 cancelled</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setOperationToExecutingState &#123;</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    executing = <span class="literal">YES</span>;</span><br><span class="line">    finished = <span class="literal">NO</span>;</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setOperationToFinishState &#123;</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    executing = <span class="literal">NO</span>;</span><br><span class="line">    finished = <span class="literal">YES</span>;</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setOperationToCancelState &#123;</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isCancelled"</span>];</span><br><span class="line">    cancelled = <span class="literal">YES</span>;</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isCancelled"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isExecuting &#123;</span><br><span class="line">    <span class="keyword">return</span> executing;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">- (<span class="built_in">BOOL</span>)isFinished &#123;</span><br><span class="line">    <span class="keyword">return</span> finished;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isCancelled &#123;</span><br><span class="line">    <span class="keyword">return</span> cancelled;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isAsynchronous &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -527,11 +524,9 @@
         
         <div class="post-tags">
           
-            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
-          
-            <a href="/tags/Go/" rel="tag"># Go</a>
+            <a href="/tags/NSOperation/" rel="tag"># NSOperation</a>
           
         </div>
       
@@ -544,8 +539,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/04/Control-Status-Bar/" rel="next" title="Control_Status_Bar">
-                <i class="fa fa-chevron-left"></i> Control_Status_Bar
+              <a href="/2020/02/24/clean-code-summary/" rel="next" title="代码整洁之道Tips">
+                <i class="fa fa-chevron-left"></i> 代码整洁之道Tips
               </a>
             
           </div>
@@ -553,10 +548,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/04/811-Subdomain-Visit-Count/" rel="prev" title="811.Subdomain_Visit_Count">
-                811.Subdomain_Visit_Count <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -784,7 +775,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">常规解法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text">快慢指针</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">main 方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text">start 方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">3.</span> <span class="nav-text">cancelled</span></a></li></ol></div>
             
 
           </div>
@@ -1035,13 +1026,13 @@
       var articles = db.collection('articles')
 
       //https://hexo.io/docs/variables.html
-      var isPost = '876.Middle_of_the_Linked_List'.length > 0
+      var isPost = 'NSOperation'.length > 0
       var isArchive = '' === 'true'
       var isCategory = ''.length > 0
       var isTag = ''.length > 0
 
       if (isPost) { //is article page
-        var title = '876.Middle_of_the_Linked_List'
+        var title = 'NSOperation'
         var doc = articles.doc(title)
 
         getCount(doc, true).then(appendCountTo($('.post-meta')))
