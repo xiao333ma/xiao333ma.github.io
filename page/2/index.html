@@ -347,6 +347,217 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/876-Middle-of-the-Linked-List/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/04/876-Middle-of-the-Linked-List/" class="post-title-link" itemprop="url">876.Middle_of_the_Linked_List</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-04 22:41:26" itemprop="dateCreated datePublished" datetime="2019-08-04T22:41:26+08:00">2019-08-04</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-08-05 10:36:28" itemprop="dateModified" datetime="2019-08-05T10:36:28+08:00">2019-08-05</time>
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">1.6k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">3 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://leetcode.com/problems/middle-of-the-linked-list/" target="_blank" rel="noopener">876. Middle of the Linked List</a></p>
+<p>该题目给定一个链表，找出链表中间的那个节点，如果是偶数的话，返回中间后边的节点</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">Output: [<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"></span><br><span class="line">Input: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">Output: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+<h1>常规解法</h1>
+<p>遍历这个链表，然后把每一个节点放在数组里边，取数组的中间值，返回。go 语言实现如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">middleNode</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    array := <span class="built_in">make</span>([]*ListNode, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> head != <span class="literal">nil</span> &#123;</span><br><span class="line">            array = <span class="built_in">append</span>(array, head)</span><br><span class="line">            head = head.Next</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> array[<span class="built_in">len</span>(array) / <span class="number">2</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Time Complexity: O(N)</p>
+<p>Space Complexity: O(N)</p>
+</blockquote>
+<h1>快慢指针</h1>
+<p>一个走一步，一个走两步，当走两步的到达末尾的时候，走一步的那个，就正好在中间。go 语言实现如下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">middleNode</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> slow,fast = head,head</span><br><span class="line">    <span class="keyword">for</span> fast != <span class="literal">nil</span> &amp;&amp; fast.Next!=<span class="literal">nil</span>&#123;</span><br><span class="line">        slow = slow.Next</span><br><span class="line">        fast = fast.Next.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> slow</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Time Complexity: O(N)</p>
+<p>Space Complexity: O(1)</p>
+</blockquote>
+<p>顺便吐槽一下 LeetCode 的代码运行机制，如第一种方式，如果把 array 方在函数体外边，直接 <code>Run Code</code> 是没问题的，但是当 <code>Submit</code> 的时候，就会报错，提示 <code>Wrong Answer</code>。这个错误搞得我都要怀疑人生了，后来突然灵光一现，发现，只要把变量放在函数里边就 OK 了，也是醉了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">,--^----------,--------,-----,-------^--,</span><br><span class="line"> | |||||||||   `--------&apos;     |          O</span><br><span class="line"> `+---------------------------^----------|</span><br><span class="line">   `\_,-------, _________________________|</span><br><span class="line">     / XXXXXX /`|     /</span><br><span class="line">    / XXXXXX /  `\   /</span><br><span class="line">   / XXXXXX /\______(  </span><br><span class="line">  / XXXXXX /</span><br><span class="line"> / XXXXXX /</span><br><span class="line">(________(</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">,--^----------,--------,-----,-------^--,</span><br><span class="line"> | |||||||||   `--------&apos;     |          O</span><br><span class="line"> `+---------------------------^----------|</span><br><span class="line">   `\_,-------, _________________________|</span><br><span class="line">     / XXXXXX /`|     /</span><br><span class="line">    / XXXXXX /  `\   /</span><br><span class="line">   / XXXXXX /\______(  </span><br><span class="line">  / XXXXXX /</span><br><span class="line"> / XXXXXX /</span><br><span class="line">(________(</span><br><span class="line"> `------&apos;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/Control-Status-Bar/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1731,7 +1942,7 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1811,7 +2022,9 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
         
           
         
-        <span class="site-state-item-count">17</span>
+          
+        
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>
@@ -2096,7 +2309,7 @@ ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]</p>
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("Control_Status_Bar");titles.push("908.Smallest_Range_I");titles.push("Const_Static_Extern");titles.push("1002_Find_Common_Characters");titles.push("制作私有 Pod 库");titles.push("Lock in iOS");' //if you have a better way to get titles of posts, please change it
+        var postsstr = 'titles.push("876.Middle_of_the_Linked_List");titles.push("Control_Status_Bar");titles.push("908.Smallest_Range_I");titles.push("Const_Static_Extern");titles.push("1002_Find_Common_Characters");titles.push("制作私有 Pod 库");titles.push("Lock in iOS");' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {
