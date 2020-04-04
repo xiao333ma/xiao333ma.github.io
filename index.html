@@ -347,6 +347,202 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/04/04/The-Tips-of-allHeaderFields-in-NSURLResponse/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/04/04/The-Tips-of-allHeaderFields-in-NSURLResponse/" class="post-title-link" itemprop="url">The Tips of allHeaderFields in NSURLResponse</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-04-04 13:26:19 / Modified: 19:10:15" itemprop="dateCreated datePublished" datetime="2020-04-04T13:26:19+08:00">2020-04-04</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/category/" itemprop="url" rel="index"><span itemprop="name">category</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">1.8k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">3 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这两天提交 APP Store 被拒审了，排查之后发现是 NSHTTPURLResponse 中的 allHeaderFields 的一个坑。</p>
+<p>根据 <a href="http://www.ietf.org/rfc/rfc2616.txt" target="_blank" rel="noopener">RFC2616</a> 的描述，header 中的字段是大小写不敏感的，也就是，你写 <code>Foo</code> 和 <code>foo</code> 或者是 <code>fOo</code> 是一样的，但是苹果在的实现是，当你 <code>set</code> 的时候，是按照你写的 <code>key-value</code> 来，当你再次设置的时候，是按照大小写不敏感的方式来查找 <code>set</code>，之后在设置进去。</p>
+<blockquote>
+<p>In Objective-C, the returned dictionary of headers is case-preserving during the set operation (unless the key already exists with a different case), and case-insensitive when looking up keys.<br>
+For example, if you set the header X-foo, and then later set the header X-Foo, the dictionary’s key is be X-foo, but the value comes from the X-Foo header.</p>
+</blockquote>
+<p>而苹果在 iOS 13 新增了一个方法，这个方法将会用<code>大小写不敏感</code>的方式来查找 key，然后返回对应的 value。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/*!</span><br><span class="line">    @method valueForHTTPHeaderField:</span><br><span class="line">    @abstract Returns the value which corresponds to the given header</span><br><span class="line">    field. Note that, in keeping with the HTTP RFC, HTTP header field</span><br><span class="line">    names are case-insensitive.</span><br><span class="line">    @param field the header field name to use for the lookup</span><br><span class="line">    (case-insensitive).</span><br><span class="line">    @result the value associated with the given header field, or nil if</span><br><span class="line">    there is no value associated with the given header field.</span><br><span class="line"> */</span><br><span class="line">- (nullable NSString *)valueForHTTPHeaderField:(NSString *)field API_AVAILABLE(macos(10.15), ios(13.0), watchos(6.0), tvos(13.0));</span><br></pre></td></tr></table></figure>
+<p>实际测试如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSHTTPURLResponse *res = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:@&quot;https://www.baidu.com&quot;] statusCode:200 HTTPVersion:@&quot;1.1&quot; headerFields:@&#123;@&quot;foo&quot;: @&quot;2&quot;, @&quot;Foo&quot;: @&quot;3&quot;, @&quot;FOo&quot;: @&quot;4&quot;, @&quot;bar&quot;: @&quot;1&quot;, @&quot;Bar&quot;: @&quot;2&quot;&#125;];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%@&quot;, res.allHeaderFields);</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%@&quot;, [res valueForHTTPHeaderField:@&quot;fOO&quot;]);</span><br></pre></td></tr></table></figure>
+<p>其输出结果是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    Bar = 2;</span><br><span class="line">    FOo = 4;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<p>这么看的话，似乎和文档描述的并不太一样，最后打印出来的 key 是 <code>FOo</code> 也就是最后添加进去的，而 <code>Bar</code> 也是最后添加进去的，key 会覆盖，value 也会覆盖。。。。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/03/11/Runloop-common-mod/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -392,13 +588,23 @@
                 
               
 
-              <time title="Created: 2020-03-11 19:18:35 / Modified: 20:47:24" itemprop="dateCreated datePublished" datetime="2020-03-11T19:18:35+08:00">2020-03-11</time>
+              <time title="Created: 2020-03-11 19:18:35" itemprop="dateCreated datePublished" datetime="2020-03-11T19:18:35+08:00">2020-03-11</time>
             </span>
           
 
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-03-12 09:54:26" itemprop="dateModified" datetime="2020-03-12T09:54:26+08:00">2020-03-12</time>
+              </span>
             
           
           
@@ -439,7 +645,7 @@
               
                 <span class="post-meta-item-text">Symbols count in article: </span>
               
-              <span title="Symbols count in article">9k</span>
+              <span title="Symbols count in article">9.3k</span>
             </span>
           
 
@@ -451,7 +657,7 @@
               
                 <span class="post-meta-item-text">Reading time &asymp;</span>
               
-              <span title="Reading time">16 mins.</span>
+              <span title="Reading time">17 mins.</span>
             </span>
           
 
@@ -476,6 +682,7 @@
 <p>TL;DR</p>
 <blockquote>
 <p>当你调用 CFRunLoopAddCommonMode 把一个 runloop 的某个 mode 标记为 commonMode 的时候，其实做的操作就是把当前 runloop 的 commonModeItem 中的 source timer observer 注册到这个 mode 中。</p>
+<p>当调用  <code>CFRunLoopAddSource(CFRunLoopRef rl, CFRunLoopSourceRef source, CFStringRef modeName)</code> 之类的方法添加一个 source/timer/observer 时，如果 modeName 是 kCFRunLoopCommonModes 的话，会把这个 source 添加到 commonModeItems 里，然后把这个 source/timer/observer 添加到 runloop 的所有 mode 中（遍历 runloop 的 modes，根据名称找到 mode，然后添加进去）</p>
 </blockquote>
 <p>首先我们看下 CFRunLoopModeRef 的定义</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> __<span class="title">CFRunLoopMode</span> *<span class="title">CFRunLoopModeRef</span>;</span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> struct <span class="title">CF_BRIDGED_MUTABLE_TYPE</span><span class="params">(id)</span> __CFRunLoopSource * CFRunLoopSourceRef</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> struct <span class="title">CF_BRIDGED_MUTABLE_TYPE</span><span class="params">(id)</span> __CFRunLoopObserver * CFRunLoopObserverRef</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> struct <span class="title">CF_BRIDGED_MUTABLE_TYPE</span><span class="params">(NSTimer)</span> __CFRunLoopTimer * CFRunLoopTimerRef</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">CFRunLoopMode</span> &#123;</span></span><br><span class="line">    CFRuntimeBase _base;</span><br><span class="line">    <span class="keyword">pthread_mutex_t</span> _lock;	<span class="comment">/* must have the run loop locked before locking this */</span></span><br><span class="line">    CFStringRef _name;</span><br><span class="line">    Boolean _stopped;</span><br><span class="line">    <span class="keyword">char</span> _padding[<span class="number">3</span>];</span><br><span class="line">    CFMutableSetRef _sources0;</span><br><span class="line">    CFMutableSetRef _sources1;</span><br><span class="line">    CFMutableArrayRef _observers;</span><br><span class="line">    CFMutableArrayRef _timers;</span><br><span class="line">    CFMutableDictionaryRef _portToV1SourceMap;</span><br><span class="line">    __CFPortSet _portSet;</span><br><span class="line">    CFIndex _observerMask;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> USE_DISPATCH_SOURCE_FOR_TIMERS</span></span><br><span class="line">    <span class="keyword">dispatch_source_t</span> _timerSource;</span><br><span class="line">    <span class="keyword">dispatch_queue_t</span> _queue;</span><br><span class="line">    Boolean _timerFired; <span class="comment">// set to true by the source when a timer has fired</span></span><br><span class="line">    Boolean _dispatchTimerArmed;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> USE_MK_TIMER_TOO</span></span><br><span class="line">    <span class="keyword">mach_port_t</span> _timerPort;</span><br><span class="line">    Boolean _mkTimerArmed;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> DEPLOYMENT_TARGET_WINDOWS</span></span><br><span class="line">    DWORD _msgQMask;</span><br><span class="line">    <span class="keyword">void</span> (*_msgPump)(<span class="keyword">void</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">uint64_t</span> _timerSoftDeadline; <span class="comment">/* TSR */</span></span><br><span class="line">    <span class="keyword">uint64_t</span> _timerHardDeadline; <span class="comment">/* TSR */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -711,6 +918,212 @@
 <p><strong>异步</strong></p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyASyncOperation.h</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyAsyncOperation</span> : <span class="title">NSOperation</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyASyncOperation.m</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyAsyncOperation</span> ()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">BOOL</span>        executing;</span><br><span class="line">    <span class="built_in">BOOL</span>        finished;</span><br><span class="line">    <span class="built_in">BOOL</span>        cancelled;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyAsyncOperation</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 只需重写 start 方法，不能重写 main。</span></span><br><span class="line">- (<span class="keyword">void</span>)start &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>.cancelled) &#123;</span><br><span class="line">        [<span class="keyword">self</span> setOperationToExecutingState];</span><br><span class="line">        [<span class="keyword">self</span> handleBusiness];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [<span class="keyword">self</span> setOperationToFinishState];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)cancel &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.isFinished) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">super</span> cancel];</span><br><span class="line">    [<span class="keyword">self</span> setOperationToCancelState];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handleBusiness &#123;</span><br><span class="line">    <span class="comment">// 处理自己的业务逻辑</span></span><br><span class="line">    <span class="comment">// 注意处理 cancelled</span></span><br><span class="line">    <span class="comment">// 在异步处理结束的时候调用 [self setOperationToFinishState] 来结束 operation，耗时操作中，注意处理 cancel</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setOperationToExecutingState &#123;</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    executing = <span class="literal">YES</span>;</span><br><span class="line">    finished = <span class="literal">NO</span>;</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setOperationToFinishState &#123;</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    executing = <span class="literal">NO</span>;</span><br><span class="line">    finished = <span class="literal">YES</span>;</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isExecuting"</span>];</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isFinished"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setOperationToCancelState &#123;</span><br><span class="line">    [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"isCancelled"</span>];</span><br><span class="line">    cancelled = <span class="literal">YES</span>;</span><br><span class="line">    [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"isCancelled"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isExecuting &#123;</span><br><span class="line">    <span class="keyword">return</span> executing;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">- (<span class="built_in">BOOL</span>)isFinished &#123;</span><br><span class="line">    <span class="keyword">return</span> finished;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isCancelled &#123;</span><br><span class="line">    <span class="keyword">return</span> cancelled;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)isAsynchronous &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/02/24/HeadFirst-DesignPatterns/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/02/24/HeadFirst-DesignPatterns/" class="post-title-link" itemprop="url">HeadFirst设计模式</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-02-24 14:50:44" itemprop="dateCreated datePublished" datetime="2020-02-24T14:50:44+08:00">2020-02-24</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-03-12 09:54:26" itemprop="dateModified" datetime="2020-03-12T09:54:26+08:00">2020-03-12</time>
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Project/" itemprop="url" rel="index"><span itemprop="name">Project</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">972</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">2 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="observer"><a class="header-anchor" href="#observer">👉</a>Observer</h2>
+<p>当一个事物发生变化时，另一个可以获得通知，做 iOS 的都知道，KVO 就是观察者模式的体现。但是别忘了在 dealloc 中移除。</p>
+<h2 id="decorator"><a class="header-anchor" href="#decorator">👉</a>Decorator</h2>
+<p>以我的理解就是包装，类似于俄罗斯套娃，包装原有的类，来提供更多的功能，避免继承造成类膨胀的问题。通常是用来扩展一个已有类的功能。</p>
+<p>Decorator is used to add new features of an existing object to create a new object. There is no restriction of freezing the object until all its features are added.</p>
+<h2 id="factory"><a class="header-anchor" href="#factory">👉</a>Factory</h2>
+<p>定义了一个创建对象的接口，由子类决定要初始化的是那个类。把类的实例化推迟到子类中。</p>
+<h2 id="builder"><a class="header-anchor" href="#builder">👉</a>Builder</h2>
+<p>One should use builder if he wants to limit the object creation with certain properties/features. For example there are 4-5 attributes which are mandatory to be set before the object is created or we want to freeze object creation until certain attributes are not set yet. Basically, use it instead of constructor</p>
+<blockquote>
+<p>Decorator VS Builder</p>
+<p>Patterns like builder and factory(and abstract factory) are used in creation of objects. And the patterns like decorator (also called as structural design patterns) are used for extensibility or to provide structural changes to already created objects.</p>
+</blockquote>
 
           
         
@@ -2003,425 +2416,6 @@ KeepAlive BOOL 是否一直存活</p>
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/05/557-Reverse-Words-in-a-String-III/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xiao333ma">
-      <meta itemprop="description" content="记录一些东西">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小马的后花园">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/05/557-Reverse-Words-in-a-String-III/" class="post-title-link" itemprop="url">557.Reverse_Words_in_a_String_III</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-08-05 18:49:55" itemprop="dateCreated datePublished" datetime="2019-08-05T18:49:55+08:00">2019-08-05</time>
-            </span>
-          
-
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-12-18 10:53:56" itemprop="dateModified" datetime="2019-12-18T10:53:56+08:00">2019-12-18</time>
-              </span>
-            
-          
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              
-              <span title="Symbols count in article">864</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              
-              <span title="Reading time">2 mins.</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/" target="_blank" rel="noopener">557. Reverse Words in a String III</a></p>
-<p>这道题比较简单，就是逆序字符串</p>
-<ol>
-<li>按照空格分割字符串</li>
-<li>字符串逆序</li>
-<li>拼接输出</li>
-</ol>
-<h1>常规解法</h1>
-<ol>
-<li>分割字符串</li>
-<li>倒序遍历字符串</li>
-<li>拼接输出</li>
-</ol>
-<p>go 语言实现如下</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseWords</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> res <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line">	strArr := strings.Split(s, <span class="string">" "</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> idx, world := <span class="keyword">range</span> strArr &#123;</span><br><span class="line">		<span class="keyword">if</span> idx != <span class="number">0</span> &#123;</span><br><span class="line">			res += <span class="string">" "</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="built_in">len</span>(world) - <span class="number">1</span>; i &gt;= <span class="number">0</span> ; i-- &#123;</span><br><span class="line">			res = res + <span class="keyword">string</span>(world[i])</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样看似逻辑清晰，其实非常耗时，空间占用也大</p>
-<h1>原地逆序</h1>
-<ol>
-<li>分割字符串</li>
-<li>原地逆序，交换字符</li>
-<li>拼接输出</li>
-</ol>
-<p>go 语言实现如下</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseWords</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	strArr := strings.Split(s, <span class="string">" "</span>)</span><br><span class="line">	<span class="keyword">for</span> i, world := <span class="keyword">range</span> strArr &#123;</span><br><span class="line">		strArr[i] = revers(world)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> strings.Join(strArr, <span class="string">" "</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">revers</span><span class="params">(str <span class="keyword">string</span>)</span> <span class="title">string</span></span>   &#123;</span><br><span class="line">	bytes := []<span class="keyword">byte</span>(str)</span><br><span class="line">	i, j := <span class="number">0</span>, <span class="built_in">len</span>(bytes) - <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> i &lt; j &#123;</span><br><span class="line">		bytes[i], bytes[j] = bytes[j], bytes[i]</span><br><span class="line">		i++</span><br><span class="line">		j--</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">string</span>(bytes)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>原地逆序时间复杂度为 O(N)，空间复杂度为 O(1)，这样可以大大节省空间</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/08/04/811-Subdomain-Visit-Count/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xiao333ma">
-      <meta itemprop="description" content="记录一些东西">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小马的后花园">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/04/811-Subdomain-Visit-Count/" class="post-title-link" itemprop="url">811.Subdomain_Visit_Count</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-08-04 23:53:35" itemprop="dateCreated datePublished" datetime="2019-08-04T23:53:35+08:00">2019-08-04</time>
-            </span>
-          
-
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-08-05 10:36:28" itemprop="dateModified" datetime="2019-08-05T10:36:28+08:00">2019-08-05</time>
-              </span>
-            
-          
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              
-              <span title="Symbols count in article">966</span>
-            </span>
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              
-              <span title="Reading time">2 mins.</span>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://leetcode.com/problems/subdomain-visit-count/" target="_blank" rel="noopener">811. Subdomain Visit Count</a></p>
-<p>这个题没什么好说的，就常规解法，放到一个 map 中，key 是 域名，value 是域名出现的次数，最后遍历这个 map，按照格式输出就行。</p>
-<ol>
-<li>用空格分割字符串，找出数字和后边的域名，并把域名和数字作为 key-value 添加到 map 中</li>
-<li>用点分割，点后边的字符串就是子域名，然后把子域名 和 数字 作为 key-value 添加到 map 中</li>
-<li>最后遍历这个 map，按照格式输出就行。</li>
-</ol>
-<p>go 实现如下</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">subdomainVisits</span><span class="params">(cpdomains []<span class="keyword">string</span>)</span> []<span class="title">string</span></span> &#123;</span><br><span class="line">    countMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">    <span class="keyword">var</span> count <span class="keyword">int</span></span><br><span class="line">    <span class="keyword">var</span> subStr <span class="keyword">string</span></span><br><span class="line">    <span class="keyword">for</span> _, domain := <span class="keyword">range</span> cpdomains &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i, c := <span class="keyword">range</span> domain &#123;</span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">' '</span> &#123;</span><br><span class="line">                count, _ = strconv.Atoi(domain[:i])</span><br><span class="line">                subStr = domain[i+<span class="number">1</span>:]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        countMap[subStr] += count</span><br><span class="line">        <span class="keyword">for</span> i, c := <span class="keyword">range</span> subStr &#123;</span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">'.'</span> &#123;</span><br><span class="line">                countMap[subStr[i+<span class="number">1</span>:]] += count</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> key, value := <span class="keyword">range</span> countMap &#123;</span><br><span class="line">        res = <span class="built_in">append</span>(res, strconv.Itoa(value) + <span class="string">" "</span> + key)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2471,7 +2465,7 @@ KeepAlive BOOL 是否一直存活</p>
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2500,7 +2494,9 @@ KeepAlive BOOL 是否一直存活</p>
         
           
         
-        <span class="site-state-item-count">6</span>
+          
+        
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -2838,7 +2834,7 @@ KeepAlive BOOL 是否一直存活</p>
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("Runloop_common_mod");titles.push("NSOperation");titles.push("代码整洁之道Tips");titles.push("Mac 开机自启动程序");titles.push("编写可维护的代码");titles.push("Fitness");titles.push("WKWebView_tips");titles.push("883.Projection_Area_of_3D_Shapes");titles.push("557.Reverse_Words_in_a_String_III");titles.push("811.Subdomain_Visit_Count");' //if you have a better way to get titles of posts, please change it
+        var postsstr = 'titles.push("The Tips of allHeaderFields in NSURLResponse");titles.push("Runloop_common_mod");titles.push("NSOperation");titles.push("HeadFirst设计模式");titles.push("代码整洁之道Tips");titles.push("Mac 开机自启动程序");titles.push("编写可维护的代码");titles.push("Fitness");titles.push("WKWebView_tips");titles.push("883.Projection_Area_of_3D_Shapes");' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {

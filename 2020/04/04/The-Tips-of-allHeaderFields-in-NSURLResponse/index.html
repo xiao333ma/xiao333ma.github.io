@@ -91,16 +91,18 @@
   };
 </script>
 
-  <meta name="description" content="记录一些东西">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小马的后花园">
-<meta property="og:url" content="https://xiao333ma.github.io/archives/2019/index.html">
+  <meta name="description" content="这两天提交 APP Store 被拒审了，排查之后发现是 NSHTTPURLResponse 中的 allHeaderFields 的一个坑。 根据 RFC2616 的描述，header 中的字段是大小写不敏感的，也就是，你写 Foo 和 foo 或者是 fOo 是一样的，但是苹果在的实现是，当你 set 的时候，是按照你写的 key-value 来，当你再次设置的时候，是按照大小写不敏感的方式来">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Tips of allHeaderFields in NSURLResponse">
+<meta property="og:url" content="https://xiao333ma.github.io/2020/04/04/The-Tips-of-allHeaderFields-in-NSURLResponse/index.html">
 <meta property="og:site_name" content="小马的后花园">
-<meta property="og:description" content="记录一些东西">
+<meta property="og:description" content="这两天提交 APP Store 被拒审了，排查之后发现是 NSHTTPURLResponse 中的 allHeaderFields 的一个坑。 根据 RFC2616 的描述，header 中的字段是大小写不敏感的，也就是，你写 Foo 和 foo 或者是 fOo 是一样的，但是苹果在的实现是，当你 set 的时候，是按照你写的 key-value 来，当你再次设置的时候，是按照大小写不敏感的方式来">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-04-04T11:10:15.098Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小马的后花园">
-<meta name="twitter:description" content="记录一些东西">
+<meta name="twitter:title" content="The Tips of allHeaderFields in NSURLResponse">
+<meta name="twitter:description" content="这两天提交 APP Store 被拒审了，排查之后发现是 NSHTTPURLResponse 中的 allHeaderFields 的一个坑。 根据 RFC2616 的描述，header 中的字段是大小写不敏感的，也就是，你写 Foo 和 foo 或者是 fOo 是一样的，但是苹果在的实现是，当你 set 的时候，是按照你写的 key-value 来，当你再次设置的时候，是按照大小写不敏感的方式来">
 
 
 
@@ -108,7 +110,7 @@
 
   
   
-  <link rel="canonical" href="https://xiao333ma.github.io/archives/2019/">
+  <link rel="canonical" href="https://xiao333ma.github.io/2020/04/04/The-Tips-of-allHeaderFields-in-NSURLResponse/">
 
 
 
@@ -119,7 +121,7 @@
 </script>
 
   
-  <title>Archive | 小马的后花园</title>
+  <title>The Tips of allHeaderFields in NSURLResponse | 小马的后花园</title>
   
 
 
@@ -187,7 +189,7 @@
     
   
 
-  <div class="container sidebar-position-right page-archive">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -273,7 +275,7 @@
         
         
           
-          <li class="menu-item menu-item-archives menu-item-active">
+          <li class="menu-item menu-item-archives">
 
     
     
@@ -310,28 +312,6 @@
   
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
   
 
   
@@ -352,397 +332,236 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/04/04/The-Tips-of-allHeaderFields-in-NSURLResponse/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao333ma">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">The Tips of allHeaderFields in NSURLResponse
+
+              
+            
+          </h1>
         
+
+        <div class="post-meta">
+
           
-        
-        Um..! 19 posts in total. Keep on posting.
-      </span>
-      
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
+          
 
-        
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+              
+                
+              
 
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/12/18/编写可维护的代码/" itemprop="url">
+              <time title="Created: 2020-04-04 13:26:19 / Modified: 19:10:15" itemprop="dateCreated datePublished" datetime="2020-04-04T13:26:19+08:00">2020-04-04</time>
+            </span>
+          
+
+          
             
-              <span itemprop="name">编写可维护的代码</span>
+
             
-          </a>
-        
-      </h2>
+          
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/category/" itemprop="url" rel="index"><span itemprop="name">category</span></a></span>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-12-18T10:56:29+08:00" content="2019-12-18">
-          12-18
-        </time>
-      </div>
+                
+                
+              
+            </span>
+          
 
-    </header>
-  </article>
+          
+            
+            
+          
 
+          
+          
 
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span title="Symbols count in article">1.8k</span>
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span title="Reading time">3 mins.</span>
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/12/18/Fitness/" itemprop="url">
-            
-              <span itemprop="name">Fitness</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-12-18T10:42:11+08:00" content="2019-12-18">
-          12-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/11/15/WKWebView-tips/" itemprop="url">
-            
-              <span itemprop="name">WKWebView_tips</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-11-15T17:31:22+08:00" content="2019-11-15">
-          11-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>这两天提交 APP Store 被拒审了，排查之后发现是 NSHTTPURLResponse 中的 allHeaderFields 的一个坑。</p>
+<p>根据 <a href="http://www.ietf.org/rfc/rfc2616.txt" target="_blank" rel="noopener">RFC2616</a> 的描述，header 中的字段是大小写不敏感的，也就是，你写 <code>Foo</code> 和 <code>foo</code> 或者是 <code>fOo</code> 是一样的，但是苹果在的实现是，当你 <code>set</code> 的时候，是按照你写的 <code>key-value</code> 来，当你再次设置的时候，是按照大小写不敏感的方式来查找 <code>set</code>，之后在设置进去。</p>
+<blockquote>
+<p>In Objective-C, the returned dictionary of headers is case-preserving during the set operation (unless the key already exists with a different case), and case-insensitive when looking up keys.<br>
+For example, if you set the header X-foo, and then later set the header X-Foo, the dictionary’s key is be X-foo, but the value comes from the X-Foo header.</p>
+</blockquote>
+<p>而苹果在 iOS 13 新增了一个方法，这个方法将会用<code>大小写不敏感</code>的方式来查找 key，然后返回对应的 value。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/*!</span><br><span class="line">    @method valueForHTTPHeaderField:</span><br><span class="line">    @abstract Returns the value which corresponds to the given header</span><br><span class="line">    field. Note that, in keeping with the HTTP RFC, HTTP header field</span><br><span class="line">    names are case-insensitive.</span><br><span class="line">    @param field the header field name to use for the lookup</span><br><span class="line">    (case-insensitive).</span><br><span class="line">    @result the value associated with the given header field, or nil if</span><br><span class="line">    there is no value associated with the given header field.</span><br><span class="line"> */</span><br><span class="line">- (nullable NSString *)valueForHTTPHeaderField:(NSString *)field API_AVAILABLE(macos(10.15), ios(13.0), watchos(6.0), tvos(13.0));</span><br></pre></td></tr></table></figure>
+<p>实际测试如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSHTTPURLResponse *res = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:@&quot;https://www.baidu.com&quot;] statusCode:200 HTTPVersion:@&quot;1.1&quot; headerFields:@&#123;@&quot;foo&quot;: @&quot;2&quot;, @&quot;Foo&quot;: @&quot;3&quot;, @&quot;FOo&quot;: @&quot;4&quot;, @&quot;bar&quot;: @&quot;1&quot;, @&quot;Bar&quot;: @&quot;2&quot;&#125;];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%@&quot;, res.allHeaderFields);</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%@&quot;, [res valueForHTTPHeaderField:@&quot;fOO&quot;]);</span><br></pre></td></tr></table></figure>
+<p>其输出结果是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    Bar = 2;</span><br><span class="line">    FOo = 4;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<p>这么看的话，似乎和文档描述的并不太一样，最后打印出来的 key 是 <code>FOo</code> 也就是最后添加进去的，而 <code>Bar</code> 也是最后添加进去的，key 会覆盖，value 也会覆盖。。。。</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/08/05/883-Projection-Area-of-3D-Shapes/" itemprop="url">
-            
-              <span itemprop="name">883.Projection_Area_of_3D_Shapes</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-05T20:37:38+08:00" content="2019-08-05">
-          08-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/08/05/557-Reverse-Words-in-a-String-III/" itemprop="url">
-            
-              <span itemprop="name">557.Reverse_Words_in_a_String_III</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-05T18:49:55+08:00" content="2019-08-05">
-          08-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/08/04/811-Subdomain-Visit-Count/" itemprop="url">
-            
-              <span itemprop="name">811.Subdomain_Visit_Count</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-04T23:53:35+08:00" content="2019-08-04">
-          08-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/08/04/876-Middle-of-the-Linked-List/" itemprop="url">
-            
-              <span itemprop="name">876.Middle_of_the_Linked_List</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-04T22:41:26+08:00" content="2019-08-04">
-          08-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/08/04/Control-Status-Bar/" itemprop="url">
-            
-              <span itemprop="name">Control_Status_Bar</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-04T20:59:50+08:00" content="2019-08-04">
-          08-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/08/02/908-Smallest-Range-I/" itemprop="url">
-            
-              <span itemprop="name">908.Smallest_Range_I</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-02T19:37:02+08:00" content="2019-08-02">
-          08-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/08/02/Const-Static-Extern/" itemprop="url">
-            
-              <span itemprop="name">Const_Static_Extern</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-02T00:01:06+08:00" content="2019-08-02">
-          08-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/11/Runloop-common-mod/" rel="next" title="Runloop_common_mod">
+                <i class="fa fa-chevron-left"></i> Runloop_common_mod
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2019/page/2/">2</a><a class="extend next" rel="next" href="/archives/2019/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
+  </article>
 
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
 
         </div>
         
@@ -1049,6 +868,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
 
   <script src="/js/next-boot.js?v=7.2.0"></script>
 
@@ -1062,6 +885,37 @@
 
   
 
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '68964f514e0c240fd361',
+    clientSecret: '6437d71cb036dc41055ce3cd83c5bed7dd7a6183',
+    repo: 'xiao333ma.github.io',
+    owner: 'xiao333ma',
+    admin: ['xiao333ma'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
 
 
   
@@ -1136,13 +990,13 @@
       var articles = db.collection('articles')
 
       //https://hexo.io/docs/variables.html
-      var isPost = ''.length > 0
-      var isArchive = 'true' === 'true'
+      var isPost = 'The Tips of allHeaderFields in NSURLResponse'.length > 0
+      var isArchive = '' === 'true'
       var isCategory = ''.length > 0
       var isTag = ''.length > 0
 
       if (isPost) { //is article page
-        var title = ''
+        var title = 'The Tips of allHeaderFields in NSURLResponse'
         var doc = articles.doc(title)
 
         getCount(doc, true).then(appendCountTo($('.post-meta')))
@@ -1150,7 +1004,7 @@
       else if (!isArchive && !isCategory && !isTag) { //is index page
         var titles = [] //array to titles
 
-        var postsstr = 'titles.push("编写可维护的代码");titles.push("Fitness");titles.push("WKWebView_tips");titles.push("883.Projection_Area_of_3D_Shapes");titles.push("557.Reverse_Words_in_a_String_III");titles.push("811.Subdomain_Visit_Count");titles.push("876.Middle_of_the_Linked_List");titles.push("Control_Status_Bar");titles.push("908.Smallest_Range_I");titles.push("Const_Static_Extern");' //if you have a better way to get titles of posts, please change it
+        var postsstr = '' //if you have a better way to get titles of posts, please change it
         eval(postsstr)
 
         var promises = titles.map(function (title) {
