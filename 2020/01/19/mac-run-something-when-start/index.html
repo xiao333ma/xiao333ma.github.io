@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xiao333ma.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="上次去吃火锅，被测试 call 说无法打包了，原来是上次有人用电脑，用完之后，忘记连接电源，导致电脑自动关机了，电脑再次开启的时候，Jenkins 反向代理没有开，导致无法打包（我们的 Jenkins 是部署在 阿里云上的，通过反向代理，代理到公司的一个 Mac 电脑上，从而进行打包）。当时也没有带电脑，导致我只好打车回去，去启动反向代理。搞好之后就配置了下开机自动启动，在这里记录一下，以免有人需">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac 开机自启动程序">
+<meta property="og:url" content="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/index.html">
+<meta property="og:site_name" content="小马的后花园">
+<meta property="og:description" content="上次去吃火锅，被测试 call 说无法打包了，原来是上次有人用电脑，用完之后，忘记连接电源，导致电脑自动关机了，电脑再次开启的时候，Jenkins 反向代理没有开，导致无法打包（我们的 Jenkins 是部署在 阿里云上的，通过反向代理，代理到公司的一个 Mac 电脑上，从而进行打包）。当时也没有带电脑，导致我只好打车回去，去启动反向代理。搞好之后就配置了下开机自动启动，在这里记录一下，以免有人需">
+<meta property="og:locale">
+<meta property="og:image" content="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/mac-run-something-when-start/bootstrap_session_2x.png">
+<meta property="article:published_time" content="2020-01-19T07:46:17.000Z">
+<meta property="article:modified_time" content="2023-07-06T10:44:06.698Z">
+<meta property="article:author" content="xiao333ma">
+<meta property="article:tag" content="自动启动">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/mac-run-something-when-start/bootstrap_session_2x.png">
+
+
+<link rel="canonical" href="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"default","comments":true,"permalink":"https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/","path":"2020/01/19/mac-run-something-when-start/","title":"Mac 开机自启动程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Mac 开机自启动程序 | 小马的后花园</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小马的后花园</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">xiao333ma</p>
+  <div class="site-description" itemprop="description">记录一些东西</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2020/01/19/mac-run-something-when-start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="xiao333ma">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+      <meta itemprop="description" content="记录一些东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Mac 开机自启动程序 | 小马的后花园">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mac 开机自启动程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-01-19 15:46:17" itemprop="dateCreated datePublished" datetime="2020-01-19T15:46:17+08:00">2020-01-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-07-06 18:44:06" itemprop="dateModified" datetime="2023-07-06T18:44:06+08:00">2023-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>上次去吃火锅，被测试 call 说无法打包了，原来是上次有人用电脑，用完之后，忘记连接电源，导致电脑自动关机了，电脑再次开启的时候，Jenkins 反向代理没有开，导致无法打包（我们的 Jenkins 是部署在 阿里云上的，通过反向代理，代理到公司的一个 Mac 电脑上，从而进行打包）。当时也没有带电脑，导致我只好打车回去，去启动反向代理。搞好之后就配置了下开机自动启动，在这里记录一下，以免有人需要。</p>
+<p>通过查阅<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/Introduction.html#//apple_ref/doc/uid/10000172i-SW1-SW1">文档</a>可知，Mac 通过<code>launchd</code> 来启动服务</p>
+<p><img src="./mac-run-something-when-start/bootstrap_session_2x.png" alt=""></p>
+<p>我们只需要在对应的目录，配置好 <code>plist</code> 文件即可，当 Mac 开机或者登录账户的时候，将会按照 <code>plist</code> 文件来加载我们指定的程序。</p>
+<p>存放 <code>plist</code> 文件的目录有以下几个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/System/Library/LaunchDaemons/ // 开机后加载</span><br><span class="line">/Library/LaunchDaemons/        // 开机后加载</span><br><span class="line">/System/Library/LaunchAgents/  // 用户登录后</span><br><span class="line">/Library/LaunchAgents/         // 用户登录后</span><br><span class="line">/Library/LaunchDaemons/        // 用户登录后</span><br><span class="line">~/Library/LaunchAgents/        // 用户登录后，自定义的 plist 可以放在这里</span><br></pre></td></tr></table></figure>
+<p>详细的 plist 文件的 key 和 value 可以通过 <code>man launchd.plist</code> 来查看，但必须包含以下几项</p>
+<p>Label 一个字符串，用来标识要启动的程序，要求唯一<br>
+Program 指定一个 sh 脚本，或者一个可执行文件等<br>
+ProgramArguments 如果不指定 Program 的话，将依据这个参数来<br>
+KeepAlive BOOL 是否一直存活</p>
+<p>通过 <code>launchctl load ~/Library/LaunchAgents/com.your.launchjob.plist</code> 来启动程序</p>
+<p>通过 <code>launchctl unload ~/Library/LaunchAgents/com.your.launchjob.plist</code> 来终止程序</p>
+<p>com.package.jenkinsAgent.plist 内容如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">plist</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="meta-string">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>KeepAlive<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>EnvironmentVariables<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">key</span>&gt;</span>PATH<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">string</span>&gt;</span>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/package/.rvm/gems/ruby-2.5.3/bin:/Users/package/.rvm/gems/ruby-2.5.3@global/bin:/Users/package/.rvm/rubies/ruby-2.5.3/bin:/Users/package/.fastlane/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/package/.rvm/bin<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>com.package.jenkinsAgent<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>Program<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/package/autoRun/jenkinsAgent.sh<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>StandardErrorPath<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/package/autoRun/jenkinsAgent.stdout.log<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>StandardOutPath<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/package/autoRun/jenkinsAgent.stdout.log<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>WorkingDirectory<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/package/jenkins_workspace<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在上述的 plist 文件中，我们指定了，在用户登录的时候，去执行 <code>/Users/package/autoRun/jenkinsAgent.sh</code> 脚本，并且设置了一些 log 输出到指定文件，设置了工作目录和环境变量。</p>
+<p>/Users/package/autoRun/jenkinsAgent.sh 内容如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/zsh --login</span></span><br><span class="line"><span class="built_in">export</span> LC_ALL=en_US.UTF-8</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">ruby -v</span><br><span class="line">rvm use 2.5.3</span><br><span class="line"><span class="built_in">cd</span> /Users/package/autoRun</span><br><span class="line">java -jar agent.jar -jnlpUrl http://jenkins-test-int.igetcool.com/computer/ios-package-node/slave-agent.jnlp -secret dce8bc948f8992da8499926eafcd88d80c395a62c24cf15b2a3adaeeaed593c2 -workDir <span class="string">&quot;/Users/package/jenkins_workspace&quot;</span></span><br></pre></td></tr></table></figure>
+<p>如果 sh 脚本不能执行，请添加权限 <code>chmod +x jenkinsAgent.sh</code></p>
+<p>我们这边用的 Jenkins + fastlane 来进行打包<br>
+由于使用的 fastlane，当我通过系统直接启动 Jenkins 反向代理，在 Jenkins 上打包的时候，会发现找不到 fastlane，其实电脑上已经装好了。在 Jenkins 打包的时候，我打印了下环境变量发现和直接在终端里打印的是不一样的，后来想可能是系统启动只会加载默认的环境变量，所以我在 <code>com.package.jenkinsAgent.plist</code> 加上了 <code>EnvironmentVariables</code> 相关的配置。后来在打包，就找到了 fastlane，但又发现<code>ruby</code>版本不对，原来系统启动的时候，使用的系统自带的 ruby，导致 和 <code>bundler</code> 不匹配，这里切换下用户手动安装的 ruby 就可以了。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rvm list</span><br><span class="line">ruby -v</span><br><span class="line">rvm use <span class="number">2.5</span>.<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>当配置完成后，重启系统，Jenkins 反向代理将自动启动****</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E5%90%AF%E5%8A%A8/" rel="tag"># 自动启动</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/18/%E7%BC%96%E5%86%99%E5%8F%AF%E7%BB%B4%E6%8A%A4%E7%9A%84%E4%BB%A3%E7%A0%81/" rel="prev" title="编写可维护的代码">
+                  <i class="fa fa-chevron-left"></i> 编写可维护的代码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/24/clean-code-summary/" rel="next" title="代码整洁之道Tips">
+                  代码整洁之道Tips <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">xiao333ma</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

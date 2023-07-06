@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"xiao333ma.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="封装了 WKWebView，做一些记录 👉iOS 12 无法设置 UA 在其他 iOS 系统中，如果我们想设置 UA 的话，我们只需要这样做就可以了 123[self.wkWebView.evaluateJavaScript:@&quot;navigator.userAgent&quot; completionHandler:^(NSString* _Nullable oldUA, NSErro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WKWebView_tips">
+<meta property="og:url" content="https://xiao333ma.github.io/2019/11/15/WKWebView-tips/index.html">
+<meta property="og:site_name" content="小马的后花园">
+<meta property="og:description" content="封装了 WKWebView，做一些记录 👉iOS 12 无法设置 UA 在其他 iOS 系统中，如果我们想设置 UA 的话，我们只需要这样做就可以了 123[self.wkWebView.evaluateJavaScript:@&quot;navigator.userAgent&quot; completionHandler:^(NSString* _Nullable oldUA, NSErro">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-11-15T09:31:22.000Z">
+<meta property="article:modified_time" content="2023-07-06T10:44:06.697Z">
+<meta property="article:author" content="xiao333ma">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="WKWebView">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://xiao333ma.github.io/2019/11/15/WKWebView-tips/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"default","comments":true,"permalink":"https://xiao333ma.github.io/2019/11/15/WKWebView-tips/","path":"2019/11/15/WKWebView-tips/","title":"WKWebView_tips"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>WKWebView_tips | 小马的后花园</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小马的后花园</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS-12-%E6%97%A0%E6%B3%95%E8%AE%BE%E7%BD%AE-UA"><span class="nav-number">1.</span> <span class="nav-text">👉iOS 12 无法设置 UA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xcode-11-2-%E6%89%93%E5%BC%80-WKWebView-%E7%96%AF%E7%8B%82%E8%BE%93%E5%87%BA-log"><span class="nav-number">2.</span> <span class="nav-text">👉Xcode 11.2 打开 WKWebView 疯狂输出 log</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E6%A0%8F%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">👉状态栏问题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">xiao333ma</p>
+  <div class="site-description" itemprop="description">记录一些东西</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://xiao333ma.github.io/2019/11/15/WKWebView-tips/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="xiao333ma">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小马的后花园">
+      <meta itemprop="description" content="记录一些东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="WKWebView_tips | 小马的后花园">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WKWebView_tips
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-11-15 17:31:22" itemprop="dateCreated datePublished" datetime="2019-11-15T17:31:22+08:00">2019-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-07-06 18:44:06" itemprop="dateModified" datetime="2023-07-06T18:44:06+08:00">2023-07-06</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>封装了 WKWebView，做一些记录</p>
+<h2 id="iOS-12-无法设置-UA"><a class="header-anchor" href="#iOS-12-无法设置-UA">👉</a>iOS 12 无法设置 UA</h2>
+<p>在其他 iOS 系统中，如果我们想设置 UA 的话，我们只需要这样做就可以了</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">self</span>.wkWebView.evaluateJavaScript:<span class="string">@&quot;navigator.userAgent&quot;</span> completionHandler:^(<span class="built_in">NSString</span>* _Nullable oldUA, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="keyword">self</span>.wkWebView.customUserAgent = newUA;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>可是在 iOS 12 上，这么设置，你会发现，在 js 中取 UA 还是原来的。</p>
+<p>后来发现，只要你使用 wkWebView 调用了 <code>navigator.userAgent</code>，你再设置，会无法设置成功。也就是你用 A 调用了获取 UA 的 JS 方法，在设置 A 的 UA，将无法成功。所以我们在 iOS 12，需要先用一个假的 WKWebView 来获取，然后设置真正的 WKWebView 的 UA</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.fakeWKWebView = [[<span class="built_in">WKWebView</span> alloc] init];</span><br><span class="line">[<span class="keyword">self</span>.fakeWKWebView evaluateJavaScript:<span class="string">@&quot;navigator.userAgent&quot;</span> completionHandler:^(<span class="built_in">NSString</span>* _Nullable oldUA, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="keyword">self</span>.fakeWKWebView = <span class="literal">nil</span>;</span><br><span class="line">        <span class="keyword">self</span>.realWKWebView.customUserAgent = newUA;  </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h2 id="Xcode-11-2-打开-WKWebView-疯狂输出-log"><a class="header-anchor" href="#Xcode-11-2-打开-WKWebView-疯狂输出-log">👉</a>Xcode 11.2 打开 WKWebView 疯狂输出 log</h2>
+<p>在 Xcode 11.2 打开一个 WKWebView 会输出一堆log</p>
+<blockquote>
+<p>[Process] kill() returned unexpected error 1</p>
+</blockquote>
+<p>这是一个 WebKit 的一个 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/58321114/why-i-get-the-console-warning-process-kill-returned-unexpected-error-1-when">bug</a></p>
+<h2 id="状态栏问题"><a class="header-anchor" href="#状态栏问题">👉</a>状态栏问题</h2>
+<p>如果 WKWebView 页面会有显示或者隐藏状态栏的需求，你会发现，在一些系统上，显示或隐藏状态栏，页面会跳动，这是 scrollView 的问题，只需要这么设置即可</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (@available(iOS <span class="number">11.0</span>, *)) &#123;</span><br><span class="line">    <span class="keyword">self</span>.wkWebView.scrollView.contentInsetAdjustmentBehavior = <span class="built_in">UIScrollViewContentInsetAdjustmentNever</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"># iOS</a>
+              <a href="/tags/WKWebView/" rel="tag"># WKWebView</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/05/883-Projection-Area-of-3D-Shapes/" rel="prev" title="883.Projection_Area_of_3D_Shapes">
+                  <i class="fa fa-chevron-left"></i> 883.Projection_Area_of_3D_Shapes
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/18/Fitness/" rel="next" title="Fitness">
+                  Fitness <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">xiao333ma</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
